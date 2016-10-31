@@ -2731,7 +2731,7 @@ final class Tii_Dao_Common_PropelPDO extends PDO {
  * Reserve: tii.config.php and lang-*.config.php
  *
  * @author Alacner Zhang <alacner@gmail.com>
- * @version $Id: Config.php 8251 2016-10-27 02:40:35Z alacner $
+ * @version $Id: Config.php 8370 2016-10-31 13:36:46Z alacner $
  */
 
 final class Tii_Config
@@ -2765,6 +2765,15 @@ final class Tii_Config
 	 * @return bool
 	 */
 	protected static function loader($namespace = 'tii')
+
+
+	/**
+	 * Automatic loading configuration files
+	 *
+	 * @param string $name
+	 * @return bool
+	 */
+	public static function getFile($name)
 
 
 	/**
