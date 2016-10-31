@@ -1,0 +1,5047 @@
+
+/**
+ * The program guide base entrance
+ * 
+ * WARNING: To prevent naming conflicts, please do not use `Tii' started, GOOD LUCK!!!
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Bootstrap.php 8251 2016-10-27 02:40:35Z alacner $
+ */
+
+error_reporting(0);
+
+version_compare(PHP_VERSION, '5.4.0', '>=') || die('require PHP > 5.4.0 !');
+ini_set('magic_quotes_runtime', 0);
+
+define('TII_DIRECTORY', __DIR__);
+defined('TII_SAPI') || define('TII_SAPI', PHP_SAPI);
+defined('TII_PROCESSOR') || define('TII_PROCESSOR',
+	'Tii_Application_Processor_' . ucfirst(in_array(TII_SAPI, ['cli', 'mock']) ? TII_SAPI : 'http')
+);
+
+/**
+ * Common function
+ */
+if (!function_exists('boolval')) { function boolval($val) { return (bool) $val;}}//PHP 5 >= 5.5.0
+
+/**
+ * Class Tii
+ */
+final class Tii
+
+
+	/**
+	 * Concat and filter class name
+	 *
+	 * @return string
+	 */
+	public static function className()
+
+
+	/**
+	 * usage
+	 *
+	 * @param $less
+	 * @return object
+	 */
+	public static function usage($less = false)
+
+
+	/**
+	 * Call any method ignore accessible, Try call_user_func* first.
+	 *
+	 * @see call_user_func_array
+	 *
+	 * @param callable $function
+	 * @param array $paramArr
+	 *
+	 * @return mixed
+	 */
+	public static function call($function, $paramArr = [])
+
+
+	/**
+	 * Create a singleton object
+	 * args:
+	 * 1) className[, arg1[,...]]
+	 * 2) [className[, arg1[,...]]] -- first arg is a array like function argument...
+	 * The className begin with @ to delegate class
+	 */
+	public static function object()
+
+
+	/**
+	 * Create a singleton object
+	 *
+	 * className[, [arg1[,...]]]
+	 *
+	 * @see static::object
+	 * @param $className
+	 * @param $arguments
+	 * @return mixed|string
+	 */
+	public static function objective($className, $arguments)
+
+
+	/**
+	 * cache data like buffer
+	 * args: key, func[, arg1[, arg2[,...]]]
+	 *
+	 * @param $key
+	 * @param $func
+	 * @return mixed
+	 */
+	public static function buffer($key, $func)
+
+
+	/**
+	 * Get Require File
+	 * WARNING: Not verify whether access to the parent directory.
+	 *
+	 * @param string $type
+	 * @param string $module
+	 * @param string $filename
+	 * @param string $ext don't contain dot
+	 * @param string $partition
+	 * @param $directory
+	 * @return string
+	 */
+	public static function filename($type, $module, $filename = '', $ext = '', $partition = '', $directory = NULL)
+
+
+	/**
+	 * Set an array item to a given value using "dot" notation.
+	 *
+	 * @param $array
+	 * @param $key
+	 * @param $value
+	 * @param $delimiter
+	 * @return mixed
+	 */
+	public static function setter(array &$array, $key, $value, $delimiter = '.')
+
+
+	/**
+	 * Get an item from an array using "dot" notation.
+	 *
+	 * @param $array
+	 * @param $key
+	 * @param mixed $default
+	 * @param $delimiter
+	 * @return mixed
+	 */
+	public static function getter($array, $key, $default = NULL, $delimiter = '.')
+
+
+	/**
+	 * Replace the variables in the string
+	 *
+	 * @param string $code like: "{0}_st_{2.id}d{1.2}{2.data.name}"
+	 * @param array $array like: [1, [2,3,4], ['id' => 2, 'data' => ['name' => 'name']]];
+	 * @return string like: 1_st_2d4name
+	 */
+	public static function render($code, array $array = [])
+
+
+	/**
+	 * Validator make
+	 *
+	 * @param array $data {key:value}
+	 * @param array $rules {key1:'rule1', key2:{'rule1', 'rule2'=>{arg1,arg2...}})}
+	 * @param array $alias {key1:'AliasName'}
+	 * @param array $messages {rule1:'{0} blah...', rule2:'{0}...{1.2}'}
+	 * @param bool $throw
+	 * @return array
+	 * @throws Tii_Exception
+	 */
+	public static function validator($data = [], $rules = [], $alias = [], $messages = [], $throw = true)
+
+
+	/**
+	 * Get value
+	 *
+	 * @param $value
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function value($value, $default = NULL)
+
+
+	/**
+	 * According to the key for an array of values
+	 *
+	 * @param $array
+	 * @param $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function valueInArray($array, $key, $default = NULL)
+
+
+	/**
+	 * Prepend something to the array without the keys being reindexed and/or need to prepend a key value pair.
+	 * @see array_unshift
+	 *
+	 * @param $array
+	 * @param $key
+	 * @param $value
+	 * @return int
+	 */
+	public static function unshiftkv(array &$array, $key, $value)
+
+
+	/**
+	 * Pop array until got a value
+	 *
+	 * @param $arr
+	 * @param $shuffle
+	 * @return mixed
+	 */
+	public static function pop($arr, $shuffle = false)
+
+
+	/**
+	 * Combine a array from the key field and the value field in array
+	 * 1) $valueField = NULL, $keyField = NULL
+	 * ['key' => [val,val,...], 'key2' => [val2,val2,...],...] to [[key=>val,key2=>val2,...],[key=>val,key2=>val2,...]...]
+	 * 2) $valueField = valueField, $keyField = keyField
+	 * [{keyField:key,valueField:value,foo:bar},{keyField:key,valueField:value}...] to {key:value,key:value,...}
+	 * 3) $valueField = valueField, $keyField = NULL
+	 * [{valueField:value,foo:bar},{valueField:value}...] to [value,value,...]
+	 * 4) $valueField = NULL, $keyField = keyField
+	 * [{keyField:key,foo:bar},{keyField:key,...}...] to {key:{keyField:key,foo:bar},key:{keyField:key,...},...}
+	 *
+	 * @param array $array
+	 * @param $valueField
+	 * @param $keyField
+	 * @return array
+	 */
+	public static function combine(array $array, $valueField = NULL, $keyField = NULL)
+
+
+	/**
+	 * Can be used in the key array size or the value array size are not fixed.
+	 *
+	 * Arguments: [val1, val2, val...], key1, key2, key...
+	 * @return array [key1:val1, key2:val2, key:val, ...]
+	 */
+	public static function combiner()
+
+
+	/**
+	 * Separate a array to the key field and the value field in array
+	 * {key:value,key:value,...} to [{keyField:key,valueField:value},{keyField:key,valueField:value}...]
+	 *
+	 * @param array $array
+	 * @param $keyField
+	 * @param $valueField
+	 * @return array
+	 */
+	public static function separate(array $array, $keyField, $valueField)
+
+
+	/**
+	 * Conversion constants
+	 *
+	 * class `ClassName' have some constant like:
+	 * const CONST_A = 0;
+	 * const CONST_B = 1;
+	 * const CONST_C = 2;
+	 *
+	 * Usage:
+	 * constants('ClassName', '|^CONST_|')
+	 * => [[0 => CONST_A, 1 => CONST_B, 2 => CONST_C], [CONST_A => 0, CONST_B => 1, CONST_C => 2]]
+	 *
+	 * @param $className if NULL then get constants form get_defined_constants()
+	 * @param string $pattern The pattern to search for, as a string. [see preg_match]
+	 * @return array
+	 */
+	public static function _constants($className = NULL, $pattern = NULL)
+
+
+	/**
+	 * Conversion constants
+	 *
+	 * class `ClassName' have some constant like:
+	 * const CONST_A = 0;
+	 * const CONST_B = 1;
+	 * const CONST_C = 2;
+	 *
+	 * Usage:
+	 * constants('ClassName', '|^CONST_|') => [0 => CONST_A, 1 => CONST_B, 2 => CONST_C]
+	 * constants('ClassName', '|^CONST_|', false) => [CONST_A => 0, CONST_B => 1, CONST_C => 2]
+	 *
+	 * @param $className
+	 * @param string $pattern The pattern to search for, as a string. [see preg_match]
+	 * @param bool $flip
+	 * @return array
+	 */
+	public static function constants($className = NULL, $pattern = NULL, $flip = true)
+
+
+	/**
+	 * Cet properties from class
+	 *
+	 * @param $className
+	 * @param $pattern
+	 * @return array
+	 */
+	public static function properties($className = NULL, $pattern = NULL)
+
+
+	/**
+	 * To look for in the array is of value to a new array
+	 * 1) array,[field1,field2],field3...) -- isset
+	 * 2) filter_mode,array,[field1,field2],field3...)
+	 * 3) function($arr, $k){return [bool];},array,[field1,field2],field3...)
+	 * The first letter:
+	 * # => intval
+	 * ! => boolval
+	 * . => floatval
+	 * * => strval
+	 * > => json_encode
+	 * < => json_decode
+	 * + => serialize,
+	 * - => unserialize
+	 *
+	 * @return array
+	 */
+	public static function filter()
+
+
+	/**
+	 * Execute local machine command
+	 * WARNING: Use the exec function here
+	 *
+	 * @see sprintf
+	 * @return object [succeed,command,output,duration]
+	 */
+	public static function exec()
+
+
+	/**
+	 * Explodes string into array, optionally trims values and skips empty ones
+	 *
+	 * @param string $delimiter Delimiter. Default is ','.
+	 * @param string $string String to be exploded.
+	 * @param mixed $trim Whether to trim each element. Can be:
+	 *   - boolean - to trim normally;
+	 *   - string - custom characters to trim. Will be passed as a second argument to `trim()` function.
+	 *   - callable - will be called for each value instead of trim. Takes the only argument - value.
+	 * @param boolean $skipEmpty Whether to skip empty strings between delimiters. Default is true.
+	 * @param boolean $unique Removes duplicate values from an array, Default is true.
+	 * @return array
+	 */
+	public static function explode($delimiter, $string, $trim = true, $skipEmpty = true, $unique = true)
+
+
+	/**
+	 * Magic methods
+	 *
+	 * @param $name
+	 * @param $arguments
+	 * @return mixed
+	 */
+	public static function __callStatic($name, $arguments)
+
+
+/**
+ * Use spl_autoload_register to automatic load class
+ */
+spl_autoload_register(function($className)
+
+
+
+/**
+ * Exception basic class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Exception.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Exception extends Exception
+{
+	public function __construct()
+	{
+		$args = func_get_args();
+
+		$message = call_user_func_array('Tii::lang', $args);
+		$code = -1 * Tii_Math::hashStr(Tii::valueInArray($args, 0, ''), false);
+		parent::__construct($message, $code);
+	}
+
+	/**
+	 * Sets a user-defined error handler function
+	 *
+	 * @see set_error_handler
+	 * @param int $errno
+	 * @param string $errstr
+	 * @param string $errfile
+	 * @param int $errline
+	 * @param array $errcontext
+	 * @return bool
+	 */
+	public static function set_error_handler($errno, $errstr, $errfile, $errline, array $errcontext = [])
+
+
+	/**
+	 * @see Tii_Exception::set_error_handler
+	 * @param $errno
+	 * @param $errstr
+	 * @param $errfile
+	 * @param $errline
+	 * @param array $errcontext
+	 * @throws ErrorException
+	 */
+	public static function set_error_exception_handler($errno, $errstr, $errfile, $errline, array $errcontext = [])
+
+
+	/**
+	 * @see set_exception_handler
+	 * @param $exception
+	 * @throws Exception
+	 */
+	public static function set_exception_handler($exception)
+
+
+
+
+
+
+/**
+ * Log processing abstract classes
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Logger_Abstract
+{
+	protected $priority = Tii_Logger_Constant::ERR;
+	protected $priorities = [];
+	protected $priorityNames = [];
+	
+	public function __construct()
+	{
+		list($this->priorities, $this->priorityNames) = Tii::_constants('Tii_Logger_Constant');
+	}
+
+	/**
+	 * Set the logging level
+	 * @param int $priority
+	 */
+	public function setPriority($priority = Tii_Logger_Constant::ERR)
+
+
+	/**
+	 * Get the logging level
+	 * @return int
+	 */
+	public function getPriority()
+
+
+	/**
+	 * The calling function of constructing various error types
+	 * @param string $name
+	 * @param array $arguments
+	 * @return bool
+	 */
+	public function __call($name, $arguments)
+
+	
+	/**
+	 * According to the type of type name
+	 * @param int $priority
+	 * @return string|null
+	 */
+	public function getPriorityName($priority)
+
+	
+	/**
+	 * Logging constructor
+	 * @param string $message
+	 * @param int $priority
+	 * @param mixed $extras
+	 */
+	abstract public function doLog($message, $priority = Tii_Logger_Constant::ERR, $extras = NULL);
+
+
+/**
+ * Cache Abstract
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Cache_Abstract
+{
+	/**
+	 * Check is available on this system, bail if it isn't.
+	 */
+	abstract public function isSupported();
+	
+	/**
+	 * Store the value in the memcache memory (overwrite if key exists)
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	abstract public function set($key, $var, $compress = 0, $expire = 0);
+
+	/**
+	 * Stores variable var with key only if such key doesn't exist at the server yet.
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	abstract public function add($key, $var, $compress = 0, $expire = 0);
+
+	/**
+	 * Replace value of the existing item.
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	abstract public function replace($key, $var, $compress = 0, $expire = 0);
+
+	/**
+	 * Increment item's value.
+	 *
+	 * @param string $key Key of the item to increment.
+	 * @param int $value Increment the item by value.
+	 * @return bool
+	 */
+	abstract public function increment($key, $value = 1);
+
+	/**
+	 * Decrements value of the item by value.
+	 *
+	 * @param string $key Key of the item do decrement.
+	 * @param int $value Decrement the item by value
+	 * @return bool
+	 */
+	abstract public function decrement($key, $value = 1);
+
+	/**
+	 * Returns previously stored data if an item with such key exists on the server at this moment. You can pass array of keys to get array of values. The result array will contain only found key-value pairs.
+	 *
+	 * @param mixed $key The key or array of keys to fetch.
+	 * @return mix
+	 */
+	abstract public function get($key);
+
+	/**
+	 * Delete item from the server
+	 *
+	 * @param string $key The key associated with the item to delete.
+	 * @param int $timeout This deprecated parameter is not supported, and defaults to 0 seconds. Do not use this parameter.
+	 * @return bool
+	 */
+	abstract public function delete($key, $timeout=0);
+
+	/**
+	 * lock
+	 * @param $key
+	 * @return bool
+	 */
+	abstract public function lock($key, $expire = 60);
+
+	/**
+	 * unlock
+	 * @param $key
+	 * @return bool
+	 */
+	abstract public function unlock($key);
+
+	/**
+	 * Flush all existing items at the server
+	 *
+	 * @return void
+	 */
+	abstract public function flush();
+
+
+/**
+ * Application abstract class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Application_Abstract
+{
+	/**
+	 * Magic methods
+	 * @param $name
+	 * @param $arguments
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+
+
+	/**
+	 * Magic to get a exist value from processor
+	 *
+	 * @param $name
+	 * @return mixed
+	 * @throws Tii_Application_Controller_Exception
+	 */
+	public function __get($name)
+
+
+	/**
+	 * Magic to set a value to processor
+	 *
+	 * @param $name
+	 * @param $value
+	 */
+	public function __set($name, $value = NULL)
+
+
+	/**
+	 * Check Value Exist
+	 * @param $name
+	 * @return bool
+	 */
+	public function has($name)
+
+
+/**
+ * Processor Abstract
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+abstract class Tii_Application_Processor_Abstract
+{
+	private $interrupt = false;
+	private $vars = [];
+
+	private $moduleName;
+	private $controllerName;
+	private $actionName;
+
+	public function __construct()
+	{
+		$this->busyError();
+
+		$this->setModuleName($this->getDefaultModuleName());
+		$this->setControllerName($this->getDefaultControllerName());
+		$this->setActionName($this->getDefaultActionName());
+	}
+
+	protected function busyError()
+	{
+		$loadctrl = Tii::get('tii.application.server.busy_error.loadctrl', 0);
+		if ($loadctrl && $load = sys_getloadavg()) {
+			if ($load[0] > $loadctrl) $this->doBusyError($loadctrl, $load[0]);
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isInterrupt()
+
+
+	/**
+	 * interrupt processor
+	 */
+	public function setInterrupt($interrupt = true)
+
+
+	/**
+	 * Get processor name
+	 *
+	 * @see Tii_Application::getProcessor
+	 * @return string
+	 */
+	public function getProcessorName()
+
+
+	/**
+	 * @return Tii_Application
+	 */
+	public function getDispatcher()
+
+
+	/**
+	 * Assign a variable
+	 *
+	 * @param $key
+	 * @param NULL $value
+	 * @param string $group
+	 * @return $this
+	 */
+	public function setPair($key, $value = NULL, $group = '_')
+
+
+	/**
+	 * Assign vars
+	 *
+	 * @param array $vars
+	 * @param string $group
+	 * @return $this
+	 */
+	public function setPairs($vars, $group = '_')
+
+
+	/**
+	 * Get a var
+	 *
+	 * @param $key
+	 * @param NULL $default
+	 * @param string $group
+	 * @return NULL
+	 */
+	public function getPair($key, $default = NULL, $group = '_')
+
+
+	/**
+	 * Get vars
+	 *
+	 * @param array $default
+	 * @param string $group
+	 * @return mixed
+	 */
+	public function getPairs($default = [], $group = '_')
+
+
+	/**
+	 * Contorller internal adjustment, will not affect the page redirects
+	 *
+	 * @param string $action
+	 * @param string $controller
+	 * @param string $module
+	 * @return $this
+	 */
+	public function forward($action = NULL, $controller = NULL, $module = NULL)
+
+
+	/**
+	 * @see Tii_Config::lang
+	 * @return mixed
+	 */
+	public function lang()
+
+
+	/**
+	 * Magic methods
+	 * @param $name
+	 * @param $arguments
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+
+
+/**
+ * Assistant controller paging abstract classes
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Application_Helper_Pager_Abstract extends Tii_Application_Abstract
+{
+	protected $options = [
+		'num' => 0,//Need to the total number of the page
+		'perpage' => 10,//Number of pages per page
+		'curpage' => 1,//The current page number
+		'mpurl' => '',//The first half page url
+		'ext' => '',//Second part page url
+		'page' => 10,//Each page shows a few pages
+	];
+
+	public function __construct(array $options = [])
+	{
+		$this->options = array_merge($this->options, $options);
+		$this->filter();
+	}
+	
+	/**
+	 * 页面渲染抽象方法
+	 */
+	abstract public function render();
+	
+	/**
+	 * 过滤器，处理一些页面的值，保存在options中
+	 */
+	protected function filter()
+
+
+/**
+ * Controller abstract class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Application_Controller_Abstract extends Tii_Application_Abstract
+{
+	/**
+	 * Before do custorm action
+	 */
+	public function init()
+
+
+	/**
+	 * default action
+	 */
+	abstract public function indexAction();
+
+	/**
+	 * After responsed to do something
+	 */
+	public function over()
+
+
+	/**
+	 * Catch error
+	 *
+	 * @param Exception $e
+	 * @throws Tii_Application_Controller_Exception
+	 */
+	public function error(Exception $e)
+
+
+/**
+ * Async Tcp Connection
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Async.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Worker_Connection_Async extends Tii_Worker_Connection_Tcp
+{
+	/**
+	 * Transport layer protocol
+	 *
+	 * @var string
+	 */
+	public $transport = 'tcp';
+
+	/**
+	 * Status.
+	 *
+	 * @var int
+	 */
+	protected $status = self::STATUS_INITIAL;
+
+	/**
+	 * Remote host
+	 *
+	 * @var string
+	 */
+	protected $remoteHost = '';
+
+	/**
+	 * Remote URI
+	 *
+	 * @var string
+	 */
+	protected $remoteURI = '';
+
+	/**
+	 * Connect start time
+	 *
+	 * @var string
+	 */
+	protected $connectStartTime = 0;
+
+
+	/**
+	 * @param $name
+	 * @return callable
+	 */
+	public function __get($name)
+
+
+	/**
+	 * Construct.
+	 *
+	 * @param string $remote_address
+	 * @param array $runtime
+	 * @throws Exception
+	 */
+	public function __construct($remote_address, $runtime = [])
+
+
+	/**
+	 * Do connect.
+	 *
+	 * @return void
+	 */
+	public function connect()
+
+
+	/**
+	 * Get remote address
+	 *
+	 * @return string
+	 */
+	public function getRemoteHost()
+
+
+	/**
+	 * Get remote URI
+	 *
+	 * @return string
+	 */
+	public function getRemoteURI()
+
+
+	/**
+	 * Try to emit onError callback.
+	 *
+	 * @param int    $code
+	 * @param string $msg
+	 * @return void
+	 */
+	protected function emitError($code, $msg)
+
+
+	/**
+	 * Check connection is successfully established or failed.
+	 *
+	 * @param resource $socket
+	 * @return void
+	 */
+	public function checkConnection($socket)
+
+
+/**
+ * Connection Abstract
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Worker_Connection_Abstract extends Tii_Worker_Connection
+{
+	/**
+	 * Socket
+	 *
+	 * @var resource
+	 */
+	protected $socket = null;
+
+	/**
+	 * Remote address.
+	 *
+	 * @var string
+	 */
+	protected $remoteAddress = '';
+
+	/**
+	 * Application layer protocol.
+	 *
+	 * @var Tii_Worker_Protocol
+	 */
+	public $protocol = null;
+
+
+
+	/**
+	 * Construct.
+	 *
+	 * @param resource $socket
+	 * @param string $remote_address
+	 */
+	public function __construct($socket, $remote_address)
+
+
+	/**
+	 * Get remote Address
+	 *
+	 * @return string
+	 */
+	public function getRemoteAddress()
+
+
+	/**
+	 * Get remote IP.
+	 *
+	 * @return string
+	 */
+	public function getRemoteIp()
+
+
+	/**
+	 * Get remote port.
+	 *
+	 * @return int
+	 */
+	public function getRemotePort()
+
+
+	/**
+	 * Sends data on the connection.
+	 *
+	 * @param string $buffer
+	 * @param bool $raw
+	 * @return void|boolean
+	 */
+	abstract public function send($buffer, $raw = false);
+
+	/**
+	 * Close connection.
+	 *
+	 * @param $data
+	 * @return void
+	 */
+	abstract public function close($data = null);
+
+
+/**
+ * Worker Client
+ *
+ * Usage:
+ *
+ * $client = new Tii_Worker_Client('text.json://127.0.0.1:4521');
+ * $client->request([...])
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Client.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Worker_Client
+{
+	public static $clients = [];
+
+	public $id;
+	protected $socket;
+	protected $remote_socket;
+	protected $timeout;
+	protected $protocol;
+	protected $type = 'text';
+
+	public $onConnect;
+	public $onMessage;
+	public $onClose;
+	public $onError;
+
+	/**
+	 * send by dup protocol
+	 *
+	 * @param $address
+	 * @param $buffer
+	 * @param $throw
+	 * @return bool
+	 * @throws Tii_Exception
+	 */
+	public static function broadcast($address, $buffer, $throw = false)
+
+
+	/**
+	 * Start Listening...
+	 *
+	 * @param int $timeout
+	 * @param $func
+	 */
+	public static function run($timeout = 0, $func = NULL)
+
+
+	/**
+	 * Request the client
+	 *
+	 * @param string $buffer
+	 * @return mixed
+	 * @throws Tii_Exception
+	 */
+	public function request($buffer = '')
+
+
+	/**
+	 * Receive data
+	 *
+	 * @return mixed
+	 */
+	public function receive()
+
+
+
+
+/**
+ * Using the local file to the cache data
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: File.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Cache_File extends Tii_Cache_Abstract
+{
+	private $lockers = [];
+	private $configs;
+
+	public function __construct()
+	{
+		$this->configs = (object) array_merge([
+				'directory' => Tii::get('tii.temp_dir'),//Storage path cache files
+				'gc_probality' => 1,//The GC PPM * execution probability
+			],
+			Tii::get('tii.cache.file', [])
+		);
+
+		$this->configs->gc_probality = [true => $this->configs->gc_probality, false => (100-$this->configs->gc_probality)];
+		Tii_Filesystem::mkdir($this->configs->directory);
+	}
+
+	/**
+	 * In the file driver, check to see that the cache directory is indeed writable
+	 *
+	 * @return boolean
+	 */
+	public function isSupported()
+
+
+	/**
+	 * Get cache filename, to distinguish between the different projects
+	 * 
+	 * @param string $key
+	 * @param bool $gcEnabled
+	 * @return string
+	 */
+	public function getFilename($key, $gcEnabled = false)
+
+	
+	/**
+	 * Store the value in the filename (overwrite if key exists)
+	 * 
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use file to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function set($key, $var, $compress = 0, $expire = 0)
+
+	
+	/**
+	 * Stores variable var with key only if such key doesn't exist at the server yet.
+	 * 
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use file to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function add($key, $var, $compress = 0, $expire = 0) {
+
+	
+	/**
+	 * Replace value of the existing item.
+	 * 
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function replace($key, $var, $compress = 0, $expire = 0) {
+
+	
+	/**
+	 * Increment item's value.
+	 *
+	 * @param string $key Key of the item to increment.
+	 * @param int $value Increment the item by value.
+	 * @return bool
+	 */
+	public function increment($key, $value = 1) {
+
+	
+	/**
+	 * Decrements value of the item by value.
+	 *
+	 * @param string $key Key of the item do decrement.
+	 * @param int $value Decrement the item by value
+	 * @return bool
+	 */
+	public function decrement($key, $value = 1) {
+
+	
+	/**
+	 * Returns previously stored data if an item with such key exists on the server at this moment. You can pass array of keys to get array of values. The result array will contain only found key-value pairs.
+	 * 
+	 * @param mixed $key The key or array of keys to fetch.
+	 * @return mix
+	 */
+	public function get($key)
+
+
+	/**
+	 * Delete item from the server
+	 *
+	 * @param string $key The key associated with the item to delete. 
+	 * @param int $timeout This deprecated parameter is not supported, and defaults to 0 seconds. Do not use this parameter.
+	 * @return bool
+	 */
+	public function delete($key, $timeout = 0)
+
+
+	/**
+	 * lock
+	 * @param $key
+	 * @param $expire
+	 * @return bool
+	 */
+	public function lock($key, $expire = 60)
+
+
+	/**
+	 * unlock
+	 * @param $key
+	 * @return bool
+	 */
+	public function unlock($key)
+
+
+	/**
+	 * @param $path
+	 */
+	protected function gc($path)
+
+
+	/**
+	 * Flush all existing items at the server
+	 *
+	 * @return void
+	 */
+	public function flush()
+
+
+
+/**
+ * Package time class, prevent the server time appears to facilitate change of time cannot be modified
+ * WARNING: direct use is strictly prohibited PHP comes with the time (), date () function
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Time.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+final class Tii_Time
+{
+	/**
+	 * Set timezone，UTC，RPC
+	 * @param string $timezone
+	 */
+	public static function timezone($timezone = 'UTC')
+
+
+	/**
+	 * Return current Unix timestamp with microseconds
+	 * @return float
+	 */
+	public static function micro()
+
+
+	/**
+	 * Return current Unix timestamp with milliseconds
+	 * @return float
+	 */
+	public static function milli()
+
+
+	/**
+	 * Returns the current timestamp, defaults to return to the local time, such as the need to be accurate
+	 * @param bool $online
+	 * @return int
+	 */
+	public static function now($online = false)
+
+
+	/**
+	 * This function returns the current timestamp, there might be the error of the second level
+	 * @see http://tf.nist.gov/tf-cgi/servers.cgi
+	 * @see http://tycho.usno.navy.mil/ntp.html
+	 *
+	 * @return int
+	 */
+	public static function online()
+
+
+	/**
+	 * Return current Unix timestamp
+	 * @return int
+	 */
+	public static function locale()
+
+
+	/**
+	 * Parse about any English textual datetime description into a Unix timestamp
+	 * @param mixed $time The string to parse.
+	 * @param mixed $now Is used as a base for the calculation of relative dates.
+	 * @return int
+	 */
+	public static function totime($time = NULL, $now = NULL)
+
+
+	/**
+	 * Use the `date' format
+	 * @see totime
+	 *
+	 * @param string $format Default：Y-m-d H:i:s
+	 * @param NULL $time
+	 * @param NULL $now
+	 *
+	 * @example
+	 * ::format('Y-m-d');//The current timestamp
+	 * ::format('Y-m-d', 1234567890);//A time stamp
+	 * ::format('Y-m-d', '+5 days');//Five days later timestamp
+	 * ::format('Y-m-d', '+5 days', 1234567890); // From 1234567890 seconds to augment the timestamp of 5 days
+	 * ::format('Y-m-d', '+5 days', '+5 days'); // total +10 days timestamp
+	 * ::format('t', 'Y-m');//days in month
+	 *
+	 * @return bool|string
+	 */
+	public static function format($format = 'Y-m-d H:i:s', $time = NULL, $now = NULL)
+
+
+	/**
+	 * Returns the formatted timestamp
+	 * @example
+	 * ::formatted('Y-m-d'); // 2014-09-17 13:14:00 => 1410930840
+	 *
+	 * @param $format
+	 * @param NULL $time
+	 * @param NULL $now
+	 * @return int
+	 */
+	public static function formatted($format, $time = NULL, $now = NULL)
+
+
+	/**
+	 * Two time intervals, time2 - time1
+	 *
+	 * @param $time1
+	 * @param NULL $time2, default was now
+	 * @return int
+	 */
+	public static function interval($time1, $time2 = NULL)
+
+
+	/**
+	 * Check Two time intervals whether in seconds range(include), time2 - time1
+	 *
+	 * @param $time1
+	 * @param $forward
+	 * @param int $afterward
+	 * @param NULL $time2, default was now
+	 * @return bool
+	 */
+	public static function inSeconds($time1, $forward = -60, $afterward = 60, $time2 = NULL)
+
+
+	/**
+	 * Returns a human readable elapsed time
+	 * @param  float $microtime
+	 * @param  string  $format   The format to display (printf format)
+	 * @param int $round
+	 * @return string
+	 */
+	public static function readable($microtime, $format = '%.3f%s', $round = 3)
+
+
+	/**
+	 * Finds next execution timestamp parse in crontab syntax.
+	 * Either-or for specifying both a day-of-week and a day-of-month.
+	 *
+	 * 30 21 * * * => every 21:30
+	 * 45 4 1,10,22 * * => every 4:45 at 1,10,22 days a month
+	 * 10 1 * * 6,0 => every saturday and sunday 1:10
+	 * 0,30 18-23 * * * => every 18:00 to 23:00 between every 30 minutes
+	 * 0 23 * * 6 => every saturday 11:00 pm
+	 * * *\/1 * * * => every hour
+	 * * 23-7/1 * * * => at 11 pm to 7 am, between every two hours
+	 *
+	 * @param string $cron:
+	 *
+	 *      0     1    2    3    4
+	 *      *     *    *    *    *
+	 *      -     -    -    -    -
+	 *      |     |    |    |    |
+	 *      |     |    |    |    +----- day of week (0 - 6) (Sunday=0)
+	 *      |     |    |    +------- month (1 - 12)
+	 *      |     |    +--------- day of month (1 - 31)
+	 *      |     +----------- hour (0 - 23)
+	 *      +------------- min (0 - 59)
+	 * @param mixed $time
+	 * @param mixed $now
+	 * @return int|null
+	 */
+	public static function nexttime($cron = '* * * * *', $time = NULL, $now = NULL)
+
+
+	/**
+	 * get a single cron style notation and parse it into numeric value
+	 *
+	 * @param string $s cron string element
+	 * @param int $min minimum possible value
+	 * @param int $max maximum possible value
+	 * @return array parsed number
+	 */
+	protected static function _parseCronNumbers($s, $min, $max)
+
+
+/**
+ * Static Service caller
+ *
+ * Example: class ClassName_Service extends Tii_Service {}
+ * 1) ClassName_Service::foo($arg1, $arg2...)->bar(...);
+ *   --> called: created ClassName_Service_Foo instance then call the bar method with Tii_Delegate
+ * 2) ClassName_Service::Foo($arg1, $arg2...)->bar(...);
+ *   --> called: created ClassName_Service_Foo instance then call the bar method without Tii_Delegate
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Service.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Service
+{
+	/**
+	 * @param $name
+	 * @param $arguments
+	 * @return mixed
+	 */
+	public static function __callStatic($name, $arguments)
+
+
+/**
+ * Security Filter Class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Filter.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+final class Tii_Security_Filter
+{
+	/**
+	 * javascript, CSS, iframes, object not safe parameters, such as high level
+	 * @param  string $value The value of the need to filter
+	 * @return string
+	 */
+	public static function htmlTags($value)
+
+
+	/**
+	 * html special chars
+	 * @param  string $value The value of the need to filter
+	 * @return string
+	 */
+	public static function htmlChars($value)
+
+
+	/**
+	 * javascript value of dangerous characters
+	 * @param  string $value The value of the need to filter
+	 * @return string
+	 */
+	public static function jsChars($value)
+
+
+	/**
+	 * @param $string
+	 * @param bool $isurl
+	 * @return string
+	 */
+	public static function str($string, $isurl = false)
+
+
+/**
+ * Security encryption to decrypt, *** URL SAFE ***
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Encryption.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+final class Tii_Security_Encryption
+{
+	private static $authcodeKey = NULL; //The default encryption and decryption key
+
+	/**
+	 * Set the default encryption and decryption key
+	 * @static
+	 *
+	 */
+	public static function setAuthcodeKey($authcodeKey = '')
+
+	/**
+	 * Get the default encryption and decryption key
+	 * @static
+	 *
+	 */
+	private static function getAuthcodeKey()
+
+
+	/**
+	 * auth code url safe
+	 *
+	 * @param $string
+	 * @param string $operation
+	 * @param string $key
+	 * @param int $expiry
+	 * @param string $keyc_hash
+	 * @return string
+	 */
+	private static function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0, $keyc_hash = '')
+
+
+	/**
+	 * String encryption
+	 *
+	 * @static
+	 * @param string $data
+	 * @param int $expiry
+	 * @param string $key
+	 * @return string
+	 */
+	public static function encode($data, $expiry = 0, $key = '')
+
+
+	/**
+	 * String encryption
+	 * WARNING: The result has been the same, may increase the risk of security
+	 * *** Deprecated ***
+	 *
+	 * @static
+	 * @param string $data
+	 * @param int $expiry
+	 * @param string $key
+	 * @return string
+	 */
+	public static function encodeWithoutHash($data, $expiry = 0, $key = '')
+
+
+	/**
+	 * Decrypt the string
+	 *
+	 * @static
+	 * @param $string
+	 * @param string $key
+	 * @return string
+	 */
+	public static function decode($string, $key = '')
+
+
+	/**
+	 * url safe encode base64 with replace / + =
+	 *
+	 * @param $string
+	 * @return mixed
+	 */
+	public static function urlsafeBase64Encode($string)
+
+
+	/**
+	 * url safe decode base64
+	 * @param $string
+	 * @return string
+	 */
+	public static function urlsafeBase64Decode($string)
+
+
+
+/**
+ * Network class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Network.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+final class Tii_Network
+{
+	protected static $macPattern = "|([0-9a-f][0-9a-f][:-]){5}[0-9a-f][0-9a-f]|i";
+	protected static $ipPattern = "|([0-9]{1,3}\.){3}[0-9]{1,3}|i";
+
+	/**
+	 * Get Available Port
+	 *
+	 * @param int $start
+	 * @param int $end
+	 * @return mixed
+	 */
+	public static function getAvailablePort($start = 10000, $end = 20000)
+
+
+	/**
+	 * WARNING: Use the exec function here
+	 *
+	 * @param string $preg
+	 * @param array $exclude
+	 * @param bool $single
+	 * @return array
+	 */
+	private static function configParser($preg = "", $exclude = [], $single = false)
+
+
+	/**
+	 * Parse hostname to host & port
+	 *
+	 * @param $host
+	 * @param int $port
+	 * @return array
+	 */
+	public static function parseHost($host, $port = 22)
+
+
+	/**
+	 * Get hostname port only
+	 *
+	 * @param $host
+	 * @param int $port
+	 * @return int
+	 */
+	public static function getPort($host, $port = 22)
+
+
+	/**
+	 * Get network range
+	 * NOTICE: Only supports IPv4.
+	 *
+	 * Network range:
+	 *  single ip:1.2.3.4  -> 1.2.3.4-1.2.3.4
+	 *  wildcard: 1.2.3.*  -> 1.2.3.0-1.2.3.255
+	 *  IP segment: 1.2.3.0-1.2.3.255
+	 *
+	 * @param  string  $range Network range
+	 * @return array [lower, upper]
+	 */
+	public static function parseIpRange($range)
+
+
+	/**
+	 * Check whether the IP is in the range of the specified network
+	 * NOTICE: Only supports IPv4.
+	 *
+	 * Network range:
+	 *    Wildcard: 1.2.3.*
+	 *    CIDR: 1.2.3.0/24 || 1.2.3.4/255.255.255.0
+	 *    IP segment: 1.2.3.0-1.2.3.255
+	 *
+	 * @param  string  $ip The IP address
+	 * @param  string  $range Network range
+	 * @return bool
+	 */
+	public static function ipInRange($ip, $range)
+
+
+	/**
+	 * Check whether the IP is in the ranges of the specified network
+	 *
+	 * @param $ip
+	 * @param array $rules [range => deny_or_not[,...]] or [['range' => '1.2.3.*', 'allow' => ''][,...]]
+	 * @param bool $default
+	 * @return bool
+	 */
+	public static function ipInRanges($ip, $rules = [], $default = true)
+
+
+/**
+ * Math class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Math.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+final class Tii_Math
+{
+	/**
+	 * Since the increase effect only in a process effectively
+	 *
+	 * @return int
+	 */
+	public static function getSequenceId()
+
+
+	/**
+	 * Get system bits
+	 *
+	 * @return float [32,64]
+	 */
+	public static function getSystemBits()
+
+
+	/**
+	 * Get from $bit a began to take $span represented by the value of $status
+	 *
+	 * @static
+	 * @param $status
+	 * @param $bit
+	 * @param int $span
+	 * @return int
+	 */
+	public static function getStatus($status, $bit, $span = 1)
+
+
+	/**
+	 * Bitwise operator
+	 * NOTICE: In order to accuracy, use Tii_Dao_Common_QueryHelper::buildBinary in DAO.
+	 *
+	 * @param int $status
+	 * @param int $bit The start bit Binary
+	 * @param bool|int $val The status value，0-false, 1-true, other[$val <= (pow(2, $span) - 1)]
+	 * @param int $span span of bits
+	 * @return bool|int
+	 */
+	public static function setStatus($status, $bit, $val = true, $span = 1)
+
+
+	/**
+	 * Get Float Length
+	 * Example: func(0.123456) => 6
+	 *
+	 * @param $num
+	 * @return int
+	 */
+	public static function getFloatLength($num)
+
+
+	/**
+	 * Calculate a path chain
+	 * Example: $chain = [];
+	 *          func($chain, [key => [childKey=>[...]]], founder, key, childKey, returnArrayOrString]
+	 *          1) $o true => [arr1, arr2,...]
+	 *          2) $o false => [value1, value2,...]
+	 * @param array $chain
+	 * @param array $arr
+	 * @param $n $needle
+	 * @param $v the key in array
+	 * @param $c the child key in array
+	 * @param bool $o is return specific values by key or full array
+	 * @return bool
+	 */
+	public static function pather(array &$chain, array $arr, $n, $v, $c, $o = true)
+
+
+	/**
+	 * Various types according to the PHP variables to generate unique identification number
+	 *
+	 * @static
+	 * @param $mix
+	 * @param string|callable $func md5,crc32,sha1,...
+	 * @return mixed
+	 */
+	public static function toGuidString($mix, $func = 'md5')
+
+
+	/**
+	 * A random string
+	 *
+	 * @static
+	 * @param $len
+	 * @param string|array $str1 The generated string or array
+	 * @param string|array $str2 The generated string or array
+	 * @return string
+	 */
+	public static function random($len = 6, $str1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz', $str2 = '')
+
+
+	/**
+	 * A random digital
+	 *
+	 * @static
+	 * @param $len
+	 * @return string
+	 */
+	public static function randomDigital($len = 6)
+
+
+
+	/**
+	 * @param int $len - length of random string
+	 * @return string
+	 */
+	public static function randomReadableString($len = 6)
+
+
+	/**
+	 * @see GUID
+	 * @return string
+	 */
+	public static function guid16()
+
+
+	/**
+	 * Replacing a few position of characters
+	 *
+	 * @param $str
+	 * @param array $indexes
+	 * @param string $mask
+	 * @return mixed
+	 */
+	public static function mask($str, array $indexes, $mask = '*')
+
+
+	/**
+	 * Globally Unique Identifier,like "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+	 *
+	 * @param string $chars
+	 * @return string
+	 */
+	public static function guid($chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz')
+
+
+	/**
+	 * Get Scale random
+	 *
+	 * @param array $scales [value:percent,...] ex. ['a':10.5,'b':9.5,'c':80]
+	 * @param array $weight [value:percent,...]
+	 * @return array
+	 */
+	public static function getScaleRandom(array $scales, array $weight = [])
+
+
+	/**
+	 * Consistent Hash algorithm
+	 *
+	 * 0 ~ (2^32-1) ~ [0]
+	 * @param $key
+	 * @param array $nodes like: ['192.168.1.1', '192.168.1.2', '192.168.1.3']
+	 * @param int $replicas
+	 * @return string
+	 */
+	public static function hash($key, $nodes = [], $replicas = 32)
+
+
+	/**
+	 * To convert the decimal to 62 decimal
+	 * String order: 0123456789ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz
+	 *
+	 * @param int $number
+	 * @return string
+	 */
+	public static function decst($number)
+
+
+	/**
+	 * The 62 decimal converted to decimal
+	 * @param string $str
+	 * @return number
+	 */
+	public static function stdec($str)
+
+
+	/**
+	 * Gets a prefixed unique identifier based on the current time in microseconds.
+	 *
+	 * @param $prefix
+	 * @return string
+	 */
+	public static function uniqId($prefix = '')
+
+
+	/**
+	 * Hash string
+	 *
+	 * @param $str
+	 * @param $decst
+	 * @return string
+	 */
+	public static function hashStr($str, $decst = true)
+
+
+	/**
+	 * Hash array
+	 *
+	 * @return string
+	 */
+	public static function hashArr()
+
+
+
+
+
+
+/**
+ * Cache protocol session of abstract classes
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Cache.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_SessionHandler_Cache implements SessionHandlerInterface
+{
+	private $maxlifetime = 0;
+	private $cache; /* @var $cache Tii_Cache_Abstract */
+	private $prefix = 'tii.session.';
+
+
+/**
+ * Encapsulated with socket under the HTTP request
+ * WARNING: It is forbidden to use the file_get_contents function access external links.
+ *
+ * @author Zhihua Zhang <alacner@gmail.com>
+ * @version $Id: Http.php 677 2012-06-22 02:37:34Z yametei $
+ */
+final class Tii_Http
+
+	/**
+	 * Have a body way to access the server
+	 * @static
+	 * @param $url
+	 * @param string $data Default as a string, or preparePostBody returns the result
+	 * @param array $headers
+	 * @param array $options
+	 * @param string $method
+	 * @return stdClass
+	 */
+	public static function post($url, $data = '', array $headers = [], array $options = [], $method = 'POST')
+
+
+	/**
+	 * No body access to the server
+	 * @static
+	 * @param $url
+	 * @param array $headers
+	 * @param array $options
+	 * @param string $method
+	 * @return stdClass
+	 */
+	public static function get($url, array $headers = [], array $options = [], $method = 'GET')
+
+
+	/**
+	 * Returns the HTTP structure
+	 *
+	 * @link http://php.net/manual/en/function.stream-socket-client.php
+	 *
+	 * @static
+	 * @param $stream The structure of the prepared to send the Http body
+	 * @param array $options
+	 * @return stdClass
+	 * @throws Exception
+	 */
+	protected static function response($stream, array $options)
+
+
+	/**
+	 * @static
+	 * @param $before
+	 * @param $after
+	 * @param $decimals
+	 * @return string
+	 */
+	protected static function timeConsumption($before, $after, $decimals = 4)
+
+
+	/**
+	 * @static
+	 * @param $socket
+	 * @param $transferEncoding
+	 * @return string
+	 */
+	protected static function getSocketBodyByTransferEncoding(&$socket, $transferEncoding)
+
+
+	/**
+	 * According to the Content - Content Encoding conversion
+	 *
+	 * @static
+	 * @param $content
+	 * @param $contentEncoding Response header中的 Content-Encoding值
+	 */
+	protected static function contentDecoding(&$content, $contentEncoding)
+
+
+	/**
+	 * Decodes a gzip compressed string
+	 *
+	 * @static
+	 * @param $content
+	 * @return string
+	 */
+	protected static function gzdecode(&$content)
+
+
+	/**
+	 * Get the body body chunked format
+	 *
+	 * @static
+	 * @param $socket
+	 * @return string
+	 */
+	protected static function getSocketBodyByChunked(&$socket)
+
+
+	/**
+	 * For normal body
+	 *
+	 * @static
+	 * @param $socket
+	 * @return string
+	 */
+	protected static function getSocketBodyByNormal(&$socket)
+
+
+	/**
+	 * Build the stream for http protocol
+	 *
+	 * @static
+	 * @param $protocol
+	 * @param array $headers
+	 * @param $data
+	 * @return string
+	 */
+	public static function streamBuilder($protocol, $headers = [], $data = '')
+
+
+	/**
+	 * Parse URL
+	 *
+	 * @static
+	 * @param $url
+	 * @return array
+	 * @throws Exception
+	 */
+	public static function parseUrl($url)
+
+
+	/**
+	 * Prepare post body according to encoding type
+	 *
+	 * @param array $formvars Form parameters
+	 * @param array $formfiles Will need to send a local file, changes the content-type attributes
+	 * @return array ['data', 'headers']
+	 */
+	public static function preparePostBody(array $formvars, array $formfiles = [])
+
+
+
+	/**
+	 * HTTP protocol parser
+	 *
+	 * @param $raw
+	 * @param $remoteAddr
+	 * @param $remotePort
+	 * @return array
+	 */
+	public static function parser($raw, $remoteAddr = '127.0.0.1', $remotePort = 0)
+
+
+	/**
+	 * Parser cookie string to cookie array
+	 *
+	 * @param $cookie
+	 * @return array
+	 */
+	public static function parseCookie($cookie)
+
+
+	/**
+	 * Tidy cookies to new cookie
+	 *
+	 * @return string
+	 */
+	public static function tidyCookie()
+
+
+	/**
+	 * @param $url
+	 * @param null $append
+	 * @return string
+	 */
+	public static function urlAppend($url, $append = NULL)
+
+
+	/**
+	 * Concat url path
+	 *
+	 * @return string
+	 */
+	public static function concat()
+
+
+	/**
+	 * According to the suffix returns the mime type type
+	 * @param $ext
+	 * @return string
+	 */
+	public static function getMimeType($ext)
+
+
+	/**
+	 * Get Http status information
+	 *
+	 * @param int $code http code
+	 * @return string|null
+	 */
+	public static function getHttpStatus($code = 200)
+
+
+/**
+ * The expansion of the system files
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Filesystem.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+final class Tii_Filesystem
+{
+	const FOLDER = 1;
+	const FILE = 2;
+	const BOTH = 3;
+
+	public static $units = ['B', 'Kb', 'Mb', 'Gb', 'Tb', 'PB', 'EB', 'ZB', 'YB'];//First letter must be capitalized
+
+	/**
+	 * Get temp directory
+	 *
+	 * @return mixed|null
+	 */
+	public static function getTempDir()
+
+
+	/**
+	 * Get directory which is to save permanent data
+	 *
+	 * @return string
+	 */
+	public static function getDataDir()
+
+
+	/**
+	 * Concat directory
+	 *
+	 * @return string
+	 */
+	public static function concat()
+
+
+	/**
+	 * Explode directory
+	 *
+	 * @param $path
+	 * @return array
+	 */
+	public static function explode($path)
+
+
+	/**
+	 * Get filename extension
+	 *
+	 * @param $file
+	 * @return string
+	 */
+	public static function getFilenameExt($file)
+
+
+	/**
+	 * Get basename without extension
+	 * like: /path/to/filename.ext => filename
+	 *
+	 * @param $file
+	 * @return string
+	 */
+	public static function getBasenameWithoutExt($file)
+
+
+	/**
+	 * The relative path recursively all folders
+	 * @see getFiles
+	 */
+	public static function getRelativePathFiles($path, array $exts = [], $recursive = true, $filter = self::FILE)
+
+
+	/**
+	 * The relative path recursively all files
+	 * @see getFiles
+	 */
+	public static function getRelativePathFolders($path, $recursive = true)
+
+
+	/**
+	 *  Recursive folder for all folders
+	 *
+	 * @see getFiles
+	 * @param $path
+	 * @param bool $recursive
+	 * @return array
+	 */
+	public static function getFolders($path, $recursive = true)
+
+
+	/**
+	 * Recursive folder for all files
+	 *
+	 * @param $path
+	 * @param array $exts, default: all extensions
+	 * @param bool $recursive default: true
+	 * @param int $filter self::FILE
+	 * @return array
+	 */
+	public static function getFiles($path, array $exts = [], $recursive = true, $filter = self::FILE)
+
+
+	/**
+	 * Tests for file writability
+	 *
+	 * is_writable() returns TRUE on Windows servers when you really can't write to
+	 * the file, based on the read-only attribute.  is_writable() is also unreliable
+	 * on Unix servers if safe_mode is on.
+	 */
+	public static function isWritable($file)
+
+
+	/**
+	 * mkdir
+	 *
+	 * @param $pathname
+	 * @param int $mode
+	 * @return bool
+	 */
+	public static function mkdir($pathname, $mode = 0777)
+
+
+	/**
+	 * rmdir
+	 *
+	 * @param $pathname
+	 * @param $recursive
+	 * @return bool
+	 */
+	public static function rmdir($pathname, $recursive = false)
+
+
+	/**
+	 * Deletes filename
+	 *
+	 * @param $filename
+	 * @return bool
+	 */
+	public static function unlink($filename)
+
+
+	/**
+	 * Sets access and modification time of file
+	 *
+	 * @param $filename
+	 * @param null $time
+	 * @param null $atime
+	 * @return bool
+	 */
+	public static function touch($filename, $time = null, $atime = null)
+
+
+	/**
+	 * Copies file
+	 *
+	 * @param $source
+	 * @param $dest
+	 * @return bool
+	 */
+	public static function copy($source, $dest)
+
+
+	/**
+	 * Create file with unique file name
+	 *
+	 * @param string $prefix
+	 * @param string $suffix
+	 * @return string
+	 */
+	public static function tempnam($prefix = 'tii.', $suffix = '')
+
+
+	/**
+	 * Create file in temp dir, like tempnam
+	 * args: $filename[, $path1[, $path2[,...]]]
+	 *
+	 * @return string
+	 */
+	public static function tempfile()
+
+
+	/**
+	 * If the hash of positive and negative is the same, the probability of that conflict should be very small
+	 * EXT[2-3]_LINK_MAX => 32000 (inode number)
+	 *
+	 * @param $key
+	 * @param string $namespace
+	 * @param $suffix
+	 * @param null $path
+	 * @return mixed
+	 */
+	public static function hashfile($key, $namespace = 'tii', $suffix = '', $path = NULL)
+
+
+	/**
+	 * use LOCK_EX to lock mutex limit
+	 *
+	 * @param $key
+	 * @param callable $locked
+	 * @param callable $unlocked
+	 */
+	public static function locker($key, $locked = NULL, $unlocked = NULL)
+
+
+	/**
+	 * According to the callback function for caching
+	 *
+	 * @param $cacheName
+	 * @param int $expired
+	 * @param callable $function
+	 * @param array $param_arr
+	 * @param bool $isUseExpired
+	 * @return bool|mixed
+	 */
+	public static function cached($cacheName, $expired = 0, $function = NULL, array $param_arr = [], $isUseExpired = true)
+
+
+	/**
+	 * Returns a human readable memory size
+	 *
+	 * @param $bytes
+	 * @param string $format  The format to display (printf format)
+	 * @param int $round
+	 * @param int $mod
+	 * @return string
+	 */
+	public static function format($bytes, $format = '%.2f%s', $round = 3, $mod = 1024)
+
+
+	/**
+	 * Convert a size from human readable format (with a unit like K, M, G for Kilobytes, Megabytes, etc.)
+	 * 1m => 1048576, 2g => 2147483648,...
+	 *
+	 * @param $val
+	 * @param int $mod
+	 * @return int
+	 */
+	public static function bytes($val, $mod = 1024)
+
+
+/**
+ * Session class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Session.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+final class Tii_Application_Session
+{
+	private static $started = false;
+
+	/**
+	 * if session was started?
+	 *
+	 * @return bool
+	 */
+	public static function isStarted()
+
+
+	/**
+	 * Get and/or set the current session name
+	 *
+	 * @param $name
+	 * @return string default: PHPSESSID
+	 */
+	public static function name($name = NULL)
+
+
+	/**
+	 * Start the session
+	 *
+	 * @param NULL $handler
+	 * @throws Tii_Application_Exception
+	 */
+	public static function start($handler = NULL)
+
+
+
+/**
+ * PHPDoc Comment Parser
+ *
+ * keyword:
+ * "access" "author" "copyright" "deprecated" "example" "ignore"
+ * "internal" "link" "param" "return" "see" "since" "tutorial" "version"
+ *
+ * Simple example usage:
+ * $a = new Tii_DocCommentParser($string);
+ * $a->desc();
+ * $a->shortDesc();
+ * $a->author; //like $a->*; return [];
+ * $a->isEnabled(); //like $a->is*(); // return a bool value
+ * $a->intExpired(); //like $a->int*(); return a int value
+ * $a->floatValue(); //like $a->float*(); return a float value
+ * $a->getAuthor(); //like $a->get*(); return a value
+ *
+ * @author  Alacner Zhang <alacner@gmail.com>
+ * @version $Id: DocCommentParser.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+final class Tii_DocCommentParser
+{
+	private $_shortDesc; /** @var string short description */
+	private $_longDesc; /** @var string long description */
+ /** @var array parameters */
+
+	/**
+	 * @param string $commentString  Comment String to parse
+	 */
+	public function __construct($commentString)
+
+
+	/**
+	 * Get the short description
+	 *
+	 * @return string The short description
+	 */
+	public function shortDesc()
+
+
+	/**
+	 * Get the long description
+	 *
+	 * @return string The long description
+	 */
+	public function desc()
+
+
+	/**
+	 * Get all parameters
+	 *
+	 * @return array
+	 */
+	public function get()
+
+
+	/**
+	 * @param $name
+	 * @return NULL
+	 */
+	public function __get($name)
+
+
+/**
+ * Automatically using the [cache,monitor] with magic function.
+ *
+ * When you call a nonexistent method, will automatically to call methodName with ReflectionClass cache config.
+ * "@expired <int>" <method> default:0 permanent, -1 deleted, 1+ expired second
+ * "@cacheName <string>" <method> default: guidString with $args, @see Tii::render
+ * "@cacheMode <string>" <method> default: file
+ * "@useExpired <bool>" <method> under cacheMode == 'file', default: false
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Delegate.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+final class Tii_Delegate
+{
+	private $_;//pollutants
+
+	/**
+	 * @param $that
+	 */
+	public function __construct($that)
+
+
+
+/**
+ * HTTP response
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Response.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_Processor_Http_Response
+{
+	private $headers = [];
+
+	public function __construct()
+	{
+		$this->setHeader('Tii-Version', Tii_Version::VERSION, true);
+	}
+	
+	public function isResponsed()
+	{
+		return headers_sent();
+	}
+	
+	public function done()
+	{
+		if ($this->isResponsed()) {
+			return false;
+		}
+
+		foreach ($this->getHeaders() as $protocol => $values) {
+			is_array($values) || $values = [$values];
+
+			foreach ($values as $value) {
+				header("$protocol: $value", false);
+			}
+		}
+	}
+	
+	public function getHeaders()
+	{
+		return $this->headers;
+	}
+	
+	public function setHeaders($headers)
+	{
+		$this->headers = array_merge($this->headers, $headers);
+		return $this;
+	}
+	
+	public function setHeader($protocol, $value = NULL, $onlyDebugMode = false)
+	{
+		if ($onlyDebugMode && !Tii_Config::isDebugMode()) {
+			return false;
+		}
+		if (is_null($value)) {//protocol decided to value
+			switch(strtoupper($protocol)) {
+				case 'P3P'://Platform for Privacy Preferences
+					$value = 'CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"';
+					break;
+				default:
+			}
+		}
+		return $this->setHeaders([$protocol => $value]);
+	}
+
+	public function setCookie()
+	{
+		$paramArr = func_get_args();
+		$paramArr[0] = str_replace('.', '_', $paramArr[0]);
+		if ($paramArr[0]{0} === '_') $paramArr[1] = Tii_Security_Encryption::encode($paramArr[1]);//$value
+		return call_user_func_array('setcookie', $paramArr);
+	}
+	
+	public function setSession($name, $value = NULL)
+	{
+		if (!Tii_Application_Session::isStarted()) {
+			throw new Tii_Application_Exception("session was not successfully started");
+		}
+		if (is_null($value)) {
+			unset($_SESSION[$name]);
+			return true;
+		}
+		$_SESSION[$name] = $value;
+		return true;
+	}
+
+	/**
+	 * Usage: ->unsetSession('name1','name2',...), also use setSession('name1', NULL),setSession('name2',null),...
+	 *
+	 * @return bool
+	 * @throws Tii_Application_Exception
+	 */
+	public function unsetSession()
+
+
+	/**
+	 * Sending Http status information
+	 *
+	 * @param int $state http state code
+	 * @param bool $print
+	 */
+	public function sendHttpStatus($state = 200, $print = false)
+
+
+	/**
+	 * Send Force Download Header
+	 *
+	 * @param $filesize
+	 * @param $filename
+	 * @param $contentType
+	 */
+	public function sendForceDownload($filename, $filesize = 0, $contentType = 'application/octet-stream')
+
+
+	/**
+	 * Escape a string to prevent XSS
+	 * @see printf
+	 */
+	public function output($string, $type = 'html', $return = false)
+
+
+	/**
+	 * Output via lang
+	 */
+	public function i18n()
+
+
+	/**
+	 * Output via url
+	 */
+	public function link()
+
+
+
+
+
+
+/**
+ * PDO connection subclass that provides the basic fixes to PDO that are required by Propel.
+ *
+ * This class was designed to work around the limitation in PDO where attempting to begin
+ * a transaction when one has already been begun will trigger a PDOException.  Propel
+ * relies on the ability to create nested transactions, even if the underlying layer
+ * simply ignores these (because it doesn't support nested transactions).
+ *
+ * The changes that this class makes to the underlying API include the addition of the
+ * getNestedTransactionDepth() and isInTransaction() and the fact that beginTransaction()
+ * will no longer throw a PDOException (or trigger an error) if a transaction is already
+ * in-progress.
+ *
+ * @author     Cameron Brunner <cameron.brunner@gmail.com>
+ * @author     Hans Lellelid <hans@xmpl.org>
+ * @author     Christian Abegg <abegg.ch@gmail.com>
+ * @author     Alacner Zhang <alacner@gmail.com>
+ * @since      2006-09-22
+ * @package    propel.util
+ */
+
+final class Tii_Dao_Common_PropelPDO extends PDO {
+
+	/**
+	 * Attribute to use to set whether to cache prepared statements.
+	 */
+	const PROPEL_ATTR_CACHE_PREPARES = -1;
+
+	/**
+	 * The current transaction depth.
+	 * @var        int
+	 */
+	protected $nestedTransactionCount = 0;
+
+	/**
+	 * Cache of prepared statements (PDOStatement) keyed by md5 of SQL.
+	 *
+	 * @var        array [md5(sql) => PDOStatement]
+	 */
+	protected $preparedStatements = [];
+
+	/**
+	 * Whether to cache prepared statements.
+	 *
+	 * @var        boolean
+	 */
+	protected $cachePreparedStatements = false;
+
+	/**
+	 * Gets the current transaction depth.
+	 * @return     int
+	 */
+	public function getNestedTransactionCount()
+
+
+	/**
+	 * Set the current transaction depth.
+	 * @param      int $v The new depth.
+	 */
+	protected function setNestedTransactionCount($v)
+
+
+	/**
+	 * Decrements the current transaction depth by one.
+	 */
+	protected function decrementNestedTransactionCount()
+
+
+	/**
+	 * Increments the current transaction depth by one.
+	 */
+	protected function incrementNestedTransactionCount()
+
+
+	/**
+	 * Is this PDO connection currently in-transaction?
+	 * This is equivalent to asking whether the current nested transaction count
+	 * is greater than 0.
+	 * @return     boolean
+	 */
+	public function isInTransaction()
+
+
+	/**
+	 * Overrides PDO::beginTransaction() to prevent errors due to already-in-progress transaction.
+	 */
+	public function beginTransaction()
+
+
+	/**
+	 * Overrides PDO::commit() to only commit the transaction if we are in the outermost
+	 * transaction nesting level.
+	 */
+	public function commit()
+
+
+	/**
+	 * Overrides PDO::rollback() to only rollback the transaction if we are in the outermost
+	 * transaction nesting level.
+	 */
+	public function rollBack()
+
+
+	/**
+	 * Sets a connection attribute.
+	 *
+	 * This is overridden here to provide support for setting Propel-specific attributes
+	 * too.
+	 *
+	 * @param      int $attribute The attribute to set (e.g. PropelPDO::PROPEL_ATTR_CACHE_PREPARES).
+	 * @param      mixed $value The attribute value.
+	 */
+	public function setAttribute($attribute, $value)
+
+
+	/**
+	 * Gets a connection attribute.
+	 *
+	 * This is overridden here to provide support for setting Propel-specific attributes
+	 * too.
+	 *
+	 * @param      int $attribute The attribute to get (e.g. PropelPDO::PROPEL_ATTR_CACHE_PREPARES).
+	 */
+	public function getAttribute($attribute)
+
+
+	/**
+	 * Overrides PDO::prepare() to add query caching support if the
+	 * PropelPDO::PROPEL_ATTR_CACHE_PREPARES was set to true.
+	 * .
+	 * @param      string $sql
+	 * @param      array
+	 * @return     PDOStatement
+	 */
+	public function prepare($sql, $driver_options = [])
+
+
+	/**
+	 * Clears any stored prepared statements for this connection.
+	 */
+	public function clearStatementCache()
+
+
+
+/**
+ * Configuration Class [*.config.php]
+ *
+ * Reserve: tii.config.php and lang-*.config.php
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Config.php 8251 2016-10-27 02:40:35Z alacner $
+ */
+
+final class Tii_Config
+{
+	private static $dirs = [];
+	public static $lang = 'default';
+	private static $configs = [];
+
+	/**
+	 * Set the path of the setting load configuration file
+	 *
+	 * @param $dir array or string
+	 * @return bool
+	 */
+	public static function setDir($dir)
+
+
+	/**
+	 * Get the path of the setting load configuration file
+	 *
+	 * @param $index
+	 * @return mixed
+	 */
+	protected static function getDirs($index = NULL)
+
+
+	/**
+	 * Automatic loading configuration files
+	 *
+	 * @param string $namespace
+	 * @return bool
+	 */
+	protected static function loader($namespace = 'tii')
+
+
+	/**
+	 * According to different applications
+	 *
+	 * @return string
+	 */
+	public static function getIdentifier()
+
+
+	/**
+	 * Set one or more configs
+	 * 
+	 * @param string|array $key
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	public static function set($key, $value = NULL)
+
+
+	/**
+	 * Have value, return value, otherwise returns the default value
+	 *
+	 * @param $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function get($key, $default = NULL)
+
+
+	/**
+	 * I18N namespace builder
+	 *
+	 * @param $text
+	 * @return string
+	 */
+	public static function _lang($text)
+
+
+	/**
+	 * Multiple language support, I18N
+	 *
+	 * @static
+	 * @see sprintf
+	 * @return string
+	 */
+	public static function lang()
+
+
+	/**
+	 * Is Debug mode?
+	 *
+	 * @return boolean
+	 */
+	public static function isDebugMode()
+
+
+
+/**
+ * memcache class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Memcache.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Cache_Memcache extends Tii_Cache_Abstract
+{
+	private $memcache;
+	private $isSupported = false;
+
+	public function __construct()
+	{
+		if (class_exists('Memcache')) {
+			$this->memcache = new Memcache;
+
+			$configs = (array)Tii::get('tii.cache.memcache', []);
+
+			$successed = false;
+			foreach ($configs as $server => $config) {
+				if (call_user_func_array([$this->memcache, 'addServer'], $config)) {
+					$successed = true;
+				}
+			}
+			if ($successed) {
+				$this->isSupported = true;
+			} else {
+				$this->isSupported = $this->memcache->set("Tii_Cache_Memcache.isSupported", true);
+			}
+		}
+	}
+
+	/**
+	 * Returns FALSE if memcached is not supported on the system.
+	 * If it is, we setup the memcached object & return TRUE
+	 */
+	public function isSupported()
+
+	
+	/**
+	 * Add a memcached server to connection pool
+	 * 
+	 * @param string $host Point to the host where memcached is listening for connections. This parameter may also specify other transports like unix:///path/to/memcached.sock to use UNIX domain sockets, in this case port must also be set to 0.
+	 * @param int $port Point to the port where memcached is listening for connections. Set this parameter to 0 when using UNIX domain sockets. 
+	 * @param bool $persistent Controls the use of a persistent connection. Default to TRUE. 
+	 */
+	public function addServer()
+
+	
+	/**
+	 * Store the value in the memcache memory (overwrite if key exists)
+	 * 
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function set($key, $var, $compress = 0, $expire = 0)
+
+	
+	/**
+	 * Stores variable var with key only if such key doesn't exist at the server yet.
+	 * 
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function add($key, $var, $compress = 0, $expire = 0)
+
+	
+	/**
+	 * Replace value of the existing item.
+	 * 
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function replace($key, $var, $compress = 0, $expire = 0)
+
+	
+	/**
+	 * Increment item's value.
+	 *
+	 * @param string $key Key of the item to increment.
+	 * @param int $value Increment the item by value.
+	 * @return bool
+	 */
+	public function increment($key, $value = 1)
+
+	
+	/**
+	 * Decrements value of the item by value.
+	 *
+	 * @param string $key Key of the item do decrement.
+	 * @param int $value Decrement the item by value
+	 * @return bool
+	 */
+	public function decrement($key, $value = 1)
+
+	
+	/**
+	 * Returns previously stored data if an item with such key exists on the server at this moment. You can pass array of keys to get array of values. The result array will contain only found key-value pairs.
+	 * 
+	 * @param mixed $key The key or array of keys to fetch.
+	 * @return mixed
+	 */
+	public function get($key)
+
+
+	/**
+	 * Delete item from the server
+	 *
+	 * @param string $key The key associated with the item to delete.
+	 * @param int $timeout This deprecated parameter is not supported, and defaults to 0 seconds. Do not use this parameter.
+	 * @return bool
+	 */
+	public function delete($key, $timeout=0)
+
+
+	/**
+	 * lock
+	 * @param $key
+	 * @return bool
+	 */
+	public function lock($key, $expire = 60)
+
+
+	/**
+	 * unlock
+	 * @param $key
+	 * @return bool
+	 */
+	public function unlock($key)
+
+
+	/**
+	 * Flush all existing items at the server
+	 *
+	 * @return void
+	 */
+	public function flush()
+
+	
+	/**
+	 * Get server pool statistics
+	 *
+	 * @return array
+	 */
+	public function getExtendedStats($type = NULL, $slabid = NULL, $limit = 100)
+
+
+/**
+ * Defense CSRF scheme
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Csrf.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Application_Helper_Csrf extends Tii_Application_Abstract
+{
+	public function getName()
+	{
+		static $name;
+		$name || $name = Tii::get('tii.application.helper.csrf.name', '__csrf_token__');
+	   return $name;
+	}
+
+	public function getValue()
+	{
+		$value = $this->getSession($this->getName());
+		if (empty($value)) {
+			$value = Tii_Math::random(16);
+			$this->getResponse()->setSession($this->getName(), $value);
+		}
+		return $value;
+	}
+
+	public function getInput()
+	{
+		return sprintf('<input name="%s" type="hidden" value="%s" />', $this->getName(), $this->getValue());
+	}
+
+	/**
+	 * check csrf
+	 *
+	 * @return boolean
+	 */
+	public function check()
+
+
+	/**
+	 * Open CSRF, and validated
+	 *
+	 * @param bool $isPost
+	 * @return bool
+	 * @throws Tii_Application_Exception
+	 */
+	public function validator($isPost = true)
+
+
+/**
+ * Using the PHP Array to Cache data in runtime
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Array.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Cache_Array extends Tii_Cache_Abstract
+{
+	private $expiredTimes = [];//key => expired
+	private $data = [];//key => val
+
+	private function clearExpired()
+	{
+		$nt = microtime(true);
+		foreach($this->expiredTimes as $k => $t) {
+			$t -= $nt;
+			if (!$t) {
+				unset($this->expiredTimes[$k], $this->data[$k]);
+			}
+		}
+	}
+
+	/**
+	 * is_supported()
+	 */
+	public function isSupported()
+
+	
+	/**
+	 * Store the value in the memcache memory (overwrite if key exists)
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function set($key, $var, $compress = 0, $expire = 0)
+
+
+	/**
+	 * Stores variable var with key only if such key doesn't exist at the server yet.
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function add($key, $var, $compress = 0, $expire = 0)
+
+
+	/**
+	 * Replace value of the existing item.
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function replace($key, $var, $compress = 0, $expire = 0)
+
+
+	/**
+	 * Increment item's value.
+	 *
+	 * @param string $key Key of the item to increment.
+	 * @param int $value Increment the item by value.
+	 * @return bool
+	 */
+	public function increment($key, $value = 1)
+
+
+	/**
+	 * Decrements value of the item by value.
+	 *
+	 * @param string $key Key of the item do decrement.
+	 * @param int $value Decrement the item by value
+	 * @return bool
+	 */
+	public function decrement($key, $value = 1)
+
+
+	/**
+	 * Returns previously stored data if an item with such key exists on the server at this moment. You can pass array of keys to get array of values. The result array will contain only found key-value pairs.
+	 *
+	 * @param mixed $key The key or array of keys to fetch.
+	 * @return mix
+	 */
+	public function get($key)
+
+
+	/**
+	 * Delete item from the server
+	 *
+	 * @param string $key The key associated with the item to delete.
+	 * @param int $timeout This deprecated parameter is not supported, and defaults to 0 seconds. Do not use this parameter.
+	 * @return bool
+	 */
+	public function delete($key, $timeout = 0)
+
+
+	/**
+	 * lock
+	 * @param $key
+	 * @param $expire
+	 * @return bool
+	 */
+	public function lock($key, $expire = 60)
+
+
+	/**
+	 * unlock
+	 * @param $key
+	 * @return bool
+	 */
+	public function unlock($key)
+
+
+	/**
+	 * Flush all existing items at the server
+	 *
+	 * @return void
+	 */
+	public function flush()
+
+
+/**
+ * Using the Alternative PHP Cache to Cache data
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Apc.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Cache_Apc extends Tii_Cache_Abstract
+{
+	/**
+	 * is_supported()
+	 *
+	 * Check to see if APC is available on this system, bail if it isn't.
+	 * standard to decide is extension_loaded('apc') AND ini_get('apc.enabled') == "1"
+	 */
+	public function isSupported()
+
+	
+	/**
+	 * Store the value in the memcache memory (overwrite if key exists)
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function set($key, $var, $compress = 0, $expire = 0)
+
+
+	/**
+	 * Stores variable var with key only if such key doesn't exist at the server yet.
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function add($key, $var, $compress = 0, $expire = 0)
+
+
+	/**
+	 * Replace value of the existing item.
+	 *
+	 * @param string $key The key that will be associated with the item.
+	 * @param mixed $var The variable to store. Strings and integers are stored as is, other types are stored serialized.
+	 * @param int $compress Use MEMCACHE_COMPRESSED to store the item compressed (uses zlib).
+	 * @param int $expire Expiration time of the item. If it's equal to zero, the item will never expire. You can also use Unix timestamp or a number of seconds starting from current time, but in the latter case the number of seconds may not exceed 2592000 (30 days).
+	 * @return bool
+	 */
+	public function replace($key, $var, $compress = 0, $expire = 0)
+
+
+	/**
+	 * Increment item's value.
+	 *
+	 * @param string $key Key of the item to increment.
+	 * @param int $value Increment the item by value.
+	 * @return bool
+	 */
+	public function increment($key, $value = 1)
+
+
+	/**
+	 * Decrements value of the item by value.
+	 *
+	 * @param string $key Key of the item do decrement.
+	 * @param int $value Decrement the item by value
+	 * @return bool
+	 */
+	public function decrement($key, $value = 1)
+
+
+	/**
+	 * Returns previously stored data if an item with such key exists on the server at this moment. You can pass array of keys to get array of values. The result array will contain only found key-value pairs.
+	 *
+	 * @param mixed $key The key or array of keys to fetch.
+	 * @return mix
+	 */
+	public function get($key)
+
+
+	/**
+	 * Delete item from the server
+	 *
+	 * @param string $key The key associated with the item to delete.
+	 * @param int $timeout This deprecated parameter is not supported, and defaults to 0 seconds. Do not use this parameter.
+	 * @return bool
+	 */
+	public function delete($key, $timeout=0)
+
+
+	/**
+	 * lock
+	 * @param $key
+	 * @return bool
+	 */
+	public function lock($key, $expire = 60)
+
+
+	/**
+	 * unlock
+	 * @param $key
+	 * @return bool
+	 */
+	public function unlock($key)
+
+
+	/**
+	 * Flush all existing items at the server
+	 *
+	 * @return void
+	 */
+	public function flush()
+
+
+
+
+/**
+ * Application bootstrap
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Application.php 8251 2016-10-27 02:40:35Z alacner $
+ */
+
+final class Tii_Application
+{
+	private $error;/** @var $error Exception */
+
+	/**
+	 * @return Tii_Application
+	 */
+	public static function getInstance()
+
+
+	/**
+	 * @static
+	 */
+	public static function run()
+
+
+	/**
+	 * @return $this
+	 */
+	public function getDispatcher()
+
+
+	/**
+	 * Get/Destroy processor object
+	 *
+	 * @param bool $destroy destroy static object
+	 * @return Tii_Application_Processor_Abstract|bool
+	 */
+	public function getProcessor($destroy = false)
+
+
+	/**
+	 * @param $module
+	 * @param $controller
+	 * @return Tii_Application_Controller_Abstract
+	 * @throws Tii_Application_Exception
+	 */
+	protected function loadControllerInstance($module, $controller)
+
+		/** @var $controllerInstance Tii_Application_Controller_Abstract */
+
+		$actionMethod = sprintf('%sAction', str_replace('-', '_', $action));
+		if (!method_exists($controllerInstance, $actionMethod)) {
+			throw new Tii_Application_Exception("action `%s.%s.%s' not exist", $module, $controller, $action);
+		}
+
+		$controllerInstance->setModuleName($module);
+		$controllerInstance->setControllerName($controller);
+		$controllerInstance->setActionName($action);
+
+		try {
+			foreach(['init', $actionMethod, 'over'] as $step) {
+				if ($controllerInstance->isInterrupt()) break;
+				call_user_func([$controllerInstance, $step]);
+			}
+		} catch (Tii_Application_IgnoreException $e) {
+			//ignore
+		} catch (Exception $e) {
+			call_user_func([$controllerInstance, 'error'], $e);
+		}
+	}
+
+	public function setError($error)
+	{
+		$this->error = $error;
+	}
+
+	/**
+	 * @return Exception
+	 */
+	public function getError()
+
+
+	/**
+	 * Magic methods
+	 * @param $name
+	 * @param $arguments
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+
+
+
+
+/**
+ * Libevent event loop
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Libevent.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Event_Libevent extends Tii_Worker_Event_Abstract
+{
+	/**
+	 * Event base.
+	 *
+	 * @var resource
+	 */
+	protected $base = null;
+
+	/**
+	 * construct
+	 */
+	public function __construct()
+
+
+	/**
+	 * Timer callback.
+	 *
+	 * @param mixed $_null1
+	 * @param int   $_null2
+	 * @param mixed $timer_id
+	 */
+	protected function timerCallback($_null1, $_null2, $timer_id)
+
+
+/**
+ * Collect the results Processor
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Mock.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_Processor_Mock extends Tii_Application_Processor_Abstract
+{
+	private $ip;
+
+	protected function doBusyError($loadctrl, $load)
+	{
+		sleep(1);
+	}
+
+	public function init()
+	{
+		$this->assignAll(NULL);
+		$this->setPairs(NULL);
+	}
+
+	public function assign($key, $value = NULL)
+	{
+		return $this->setPair($key, $value, 'result');
+	}
+
+	public function assignAll($vars)
+	{
+		return $this->setPairs($vars, 'result');
+	}
+
+	public function get($key, $default = NULL)
+	{
+		return $this->getPair($key, $default, 'result');
+	}
+
+	public function getResult($default = [])
+	{
+		return $this->getPairs($default, 'result');
+	}
+
+	public function getResponse()
+	{}
+
+	/**
+	 * @param $ip
+	 */
+	public function setIp($ip)
+
+
+	/**
+	 * Get request client IP
+	 * @return string
+	 */
+	public function getIp()
+
+
+	/**
+	 * @see getPairs()
+	 */
+	public function getRequests()
+
+
+	/**
+	 * @see getPair()
+	 */
+	public function getRequest($name, $default = NULL)
+
+
+
+	/**
+	 * [expired = 0, [$fragment1[, ...]]
+	 *
+	 * @return string cached key
+	 * @throws Tii_Application_IgnoreException
+	 */
+	public function viewCached()
+
+
+	/**
+	 * After done *Action
+	 */
+	public function over()
+
+
+/**
+ * Processor http
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Http.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Application_Processor_Http extends Tii_Application_Processor_Abstract
+{
+	private $requestPath;
+	private $layout;
+	private $render;
+	private $viewFormat = NULL;
+
+	public function __construct()
+	{
+		if (!$this->checkAccess()) {
+			header("HTTP/1.0 403 Forbidden");
+			header("X-Accessed-IP: " . $this->getIp());
+
+			echo Tii::get('tii.application.server.access.message', 'Access to this resource on the server is denied!');
+			exit;
+		}
+
+		parent::__construct();
+
+		if (!isset($_SERVER['HTTP_ACCEPT_ENCODING'])
+			|| !substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')
+			|| !is_callable("ob_gzhandler")
+			|| !ob_start("ob_gzhandler")) {
+			ob_start();
+		}
+
+		ob_implicit_flush(0);
+
+		$this->urlParser();
+
+		//default support view format functions
+		Tii_Event::register('tii.application.processor.http.view.formats', function($functions) {
+			$functions['json'] = function($data){return json_encode($data);};
+			$functions['serialize'] = function($data){return serialize($data);};
+			$functions['txt'] = function($data){return $data;};
+			return $functions;
+		});
+	}
+
+	/**
+	 * Verify access
+	 *
+	 * @return bool
+	 */
+	private function checkAccess()
+
+
+	/**
+	 * [expired = 0, [$fragment1[, ...]]
+	 *
+	 * @return string cached key
+	 * @throws Tii_Application_IgnoreException
+	 */
+	public function viewCached()
+
+
+	/**
+	 * Get request client IP
+	 * @return string
+	 */
+	public function getIp()
+
+
+	/**
+	 * Get The URI which was given in order to access this page; for instance, '/index.html'.
+	 * @return string
+	 */
+	public function getRequestUri()
+
+
+	/**
+	 * Parsed URL value
+	 *
+	 * @param string $uri
+	 * @return string
+	 */
+	public function getRequestUrl($uri = NULL)
+
+
+	/**
+	 * /f/d/d/d?xxx=fd return /f/d/d/d
+	 * @return mixed
+	 */
+	public function getRequestPath()
+
+
+	/**
+	 * @return array
+	 */
+	public function getHeaders()
+
+
+	/**
+	 * Get response body
+	 * @return string
+	 */
+	public function getBody()
+
+
+	/**
+	 * Fast setting cookies
+	 *
+	 * @see Tii_Application_Processor_Http_Response::setCookie
+	 * @param $name
+	 * @param $value
+	 * @param int $expire
+	 * @return mixed
+	 */
+	public function setCookie($name, $value, $expire = 0)
+
+
+	/**
+	 * Get cookies
+	 * @return array
+	 */
+	public function getCookies()
+
+
+	/**
+	 * GPC（GET,POST,Cookie,pairs）
+	 */
+	public function getRequests()
+
+
+	/**
+	 * PGPC（PAIR, GET,POST,Cookie）
+	 */
+	public function getRequest($name, $default = NULL)
+
+
+	/**
+	 * Returns true if the request is a XMLHttpRequest.
+	 *
+	 * It works if your JavaScript library set an X-Requested-With HTTP header.
+	 * Works with Prototype, Mootools, jQuery, and perhaps others.
+	 *
+	 * @return bool true if the request is an XMLHttpRequest, false otherwise
+	 */
+	public function isXmlHttpRequest()
+
+
+	/**
+	 * Test if the current browser runs on a mobile device (smart phone, tablet, etc.)
+	 *
+	 * @staticvar bool $isMobile
+	 * @return bool
+	 */
+	public function isMobile()
+
+
+	/**
+	 * Test if the current request is robot (google, baidu, etc.)
+	 *
+	 * @staticvar bool $isRobot
+	 *
+	 * @return bool
+	 */
+	public function isRobot()
+
+
+	/**
+	 * @return Tii_Application_Processor_Http_Response
+	 */
+	public function getResponse()
+
+
+	/**
+	 * After done *Action
+	 */
+	public function over()
+
+
+	/**
+	 * Caching view data
+	 *
+	 * @param $expired
+	 * @param $response
+	 */
+	public function cachingViewData($expired, $response)
+
+
+	/**
+	 * Response sth.
+	 * @see call_user_func
+	 */
+	public function callResponseFunc()
+
+
+	/**
+	 * @see parent::forward
+	 */
+	public function forward($action = NULL, $controller = NULL, $module = NULL)
+
+
+	/**
+	 * Redirect one url to another
+	 * @param string $url target url
+	 * @param int $time delay seconds
+	 */
+	public function redirect($url, $time = 0)
+
+
+	/**
+	 * Parese URI to params,like:
+	 * /module/controller/action/name1/value1/name2/value2[.html]?getname1=getvalue1
+	 */
+	protected function urlParser()
+
+
+/**
+ * Controller HTML form processing helper classes
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Html.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_Helper_Html extends Tii_Application_Abstract
+{
+	public $baseUrl = '';
+	public $title = '';
+	public $bodyAttrs = [];
+	public $metas = []; //[{name => content},...]
+	public $scripts = [];//place => {script|css => [{src|href?v=version => attr},...]}
+
+	public function __construct()
+	{
+		$this->addMeta('generator', 'Tii/' . Tii_Version::VERSION);
+		$this->baseUrl = Tii::get('tii.application.helper.html.base_url', '');
+	}
+
+	/**
+	 * Represents an entire HTML or XML document
+	 *
+	 * @return DOMDocument
+	 */
+	public function dom()
+
+
+	/**
+	 * Set title
+	 *
+	 * @param $title
+	 * @return $this
+	 */
+	public function setTitle($title)
+
+
+	/**
+	 * Get title
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+
+
+	/**
+	 * @param $default
+	 * @return string
+	 */
+	public function title($default = '')
+
+
+	/**
+	 * Add a meta tag or Adding multiple meta tag
+	 *
+	 * @param $name | metas [name => content]
+	 * @param $content
+	 * @return $this
+	 */
+	public function addMeta($name, $content = NULL)
+
+
+	/**
+	 * Get Meta
+	 *
+	 * @param $name
+	 * @param $default
+	 * @return mixed
+	 */
+	public function getMeta($name, $default = NULL)
+
+
+	/**
+	 * Set Keywords
+	 *
+	 * @param $keywords
+	 * @return $this
+	 */
+	public function setKeywords($keywords)
+
+
+	/**
+	 * Get keywords
+	 *
+	 * @return string
+	 */
+	public function getKeywords()
+
+
+	/**
+	 * @param $description
+	 * @return $this
+	 */
+	public function setDescription($description)
+
+
+	/**
+	 * Get keywords
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+
+
+	/**
+	 * @return string
+	 */
+	public function metas()
+
+
+	/**
+	 * Set Body attr
+	 *
+	 * @param $name
+	 * @param null $value
+	 * @return $this
+	 */
+	public function setBodyAttr($name, $value = NULL)
+
+
+	/**
+	 * Body wrapper
+	 *
+	 * @param $html
+	 * @param bool $closed not close html tag for <body>
+	 * @param $attrs
+	 * @return string
+	 */
+	public function body($html, $closed = true, $attrs = [])
+
+
+	/**
+	 * Add a script|css node
+	 *
+	 * @param string $src
+	 * @param $ver
+	 * @param $attr
+	 * @param $place
+	 * @param $css
+	 * @return $this
+	 * @throws Tii_Application_Exception
+	 */
+	private function addScript($src, $ver = NULL, $attr = NULL, $place = NULL, $css = false)
+
+
+	/**
+	 * Adding multiple script file
+	 *
+	 * @param array $scripts
+	 * @param $ver
+	 * @param $attr
+	 * @param string $place
+	 * @param bool $css
+	 * @return $this
+	 */
+	public function addScripts(array $scripts, $ver = NULL, $attr = NULL, $place = NULL, $css = false)
+
+
+	/**
+	 * @param $tag
+	 * @param $attrs
+	 * @param bool $close
+	 * @param null $content
+	 * @param $closed
+	 * @return string
+	 */
+	public function nodeBuilder($tag, $attrs, $close = true, $content = NULL, $closed = true)
+
+
+	/**
+	 * Append block html
+	 */
+	public function block($place = NULL, $block)
+
+
+	/**
+	 * create inputs
+	 *
+	 * @param $inputs [input1,input2,input,...]
+	 * @param $prepend scalar or function with input
+	 * @param $append scalar or function with input
+	 * @return string
+	 */
+	public function inputs($inputs, $prepend = NULL, $append = NULL)
+
+
+	/**
+	 * create input(if no id is passed, name will assumed as id)
+	 * this method can accept two type of parameter : 1-array 2-string
+	 * array: attributes => value:
+	 * <code>
+	 * $param = [];
+	 * $param["type"] = "text";
+	 * $param["name"] = "username";
+	 * $form->input($param);
+	 * </code>
+	 * string: type, name, value, checked, id, class
+	 * example:
+	 * <code>
+	 * $form->input("text", "input_name", "input_value");
+	 * </code>
+	 */
+	public function input()
+
+
+	
+	 /**
+	 * Create select(if no id is passed, name will assumed as id)
+	 * this method can accept two type of parameter : 1-one array 2-lots parameters
+	  *
+	 * array: attributes => value: * <code>
+	 * $param = [];
+	 * $param["name"] = "test_select_name";
+	 * $param["id"] = "test_select_id";
+	 * $param["onchange"] = "alert(this.options[selectedIndex].text);";
+	 * $param["options"] = ["1"=>"Test1", "2"=>"Test2"];
+	 * $param["class"] = "someClass";
+	 * $form->select($param);
+	 * </code>
+	 * string: name, (array)options [,selected, id]
+	 * example:
+	 * <code>
+	 * $form->select("select_name", ["1"=>"Test1", "2"=>"Test2"]);
+	 * </code>
+	 */
+	public function select()
+
+
+/**
+ * Render class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Render.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_Processor_Http_Render extends Tii_Application_Abstract
+{
+	/**
+	 * @param $__file_
+	 */
+	public function includer($__file_)
+
+
+	/**
+	 * include layout
+	 *
+	 * @param string $layout
+	 * @param NULL $moduleName
+	 */
+	public function layout($layout, $moduleName = NULL)
+
+
+	/**
+	 * include fragment
+	 *
+	 * @param string $fragment
+	 * @param NULL $moduleName
+	 */
+	public function fragment($fragment, $moduleName = NULL)
+
+
+	/**
+	 * include render
+	 *
+	 * @param string $render
+	 * @param NULL $controllerName
+	 * @param NULL $moduleName
+	 */
+	public function render($render, $controllerName = NULL, $moduleName = NULL)
+
+
+	/**
+	 * Output
+	 *
+	 * @param $expired
+	 * @return string
+	 */
+	public function display($expired = 0)
+
+
+	/**
+	 * render
+	 *
+	 * @param $__file_
+	 * @param array $__viewer_
+	 * @param bool $__return_
+	 * @return string
+	 * @throws Tii_Application_Exception
+	 */
+	protected function renderFile($__file_, $__viewer_ = [], $__return_ = false)
+
+
+/**
+ *  Processor cli
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Cli.php 8249 2016-10-27 02:34:08Z alacner $
+ */
+
+class Tii_Application_Processor_Cli extends Tii_Application_Processor_Abstract
+{
+	protected $env = [];
+	protected $macPattern = "|([0-9a-f][0-9a-f][:-]){5}[0-9a-f][0-9a-f]|i";
+	protected $ipPattern = "|([0-9]{1,3}\.){3}[0-9]{1,3}|i";
+
+	public function __construct()
+	{
+		parent::__construct();
+		//for rewrite
+		$rewrite = Tii::get('tii.application.rewrite.cli', []);
+		if (count($rewrite) > 0) {
+			//not support
+		}
+		$this->argvParser();
+	}
+
+	protected function doBusyError($loadctrl, $load)
+	{
+		echo Tii::get('tii.application.server.busy_error.message', 'Server too busy. Please try again later.');
+		exit;
+	}
+
+	public function getIp()
+	{
+		return Tii_Network::getIp();
+	}
+
+	public function getMacAddr()
+	{
+		return Tii_Network::getMacAddr();
+	}
+
+	public function getRequests()
+	{
+		return array_merge($this->getPairs(), $this->getEnvs());
+	}
+
+	public function getRequest($name, $default = NULL)
+	{
+		return $this->getPair($name, $this->getEnv($name, $default));
+	}
+
+	public function getEnvs()
+	{
+		return $this->env;
+	}
+
+	public function getEnv($name, $default = NULL)
+	{
+		return Tii::valueInArray($this->env, $name, $default);
+	}
+
+	public function getPid()
+	{
+		$pid = posix_getpid();
+		$pid || $pid = getmypid();
+		return $pid;
+	}
+
+	/**
+	 * @return Tii_Application_Processor_Cli_Response
+	 */
+	public function getResponse()
+
+
+/**
+ * Cli response
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Response.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_Processor_Cli_Response
+{
+	private $colors = [];// Standard CLI colors
+
+	public function __construct()
+	{
+		$this->colors = array_flip([30 => 'gray', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white', 'black']);
+	}
+
+	public function displayHelp()
+	{
+		printf("usage: php shell --timeout=0 --memory=128M module controller[index] action[index] --param=value");
+		exit;
+	}
+
+	/**
+	 * Set process name.
+	 *
+	 * @param string $title
+	 * @return void
+	 */
+	public function setProcessTitle($title)
+
+
+	/**
+	 * Color output text for the CLI, escape string with color information
+	 *
+	 * @param $text
+	 * @param $color
+	 * @param bool $bold
+	 * @return string
+	 */
+	public function colorize($text, $color, $bold = false)
+
+
+	/**
+	 * Magic methods
+	 * @param $name
+	 * @param $arguments
+	 * @return mixed
+	 */
+	public function __call($name, $arguments)
+
+
+/**
+ * A container for listening ports
+ *
+ * example:
+ * $worker1 = new Tii_Worker('tcp://0.0.0.0:1234');
+ * $worker2 = new Tii_Worker('udp://0.0.0.0:2345');
+ * Tii_Worker::run();
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Worker.php 8251 2016-10-27 02:40:35Z alacner $
+ */
+
+class Tii_Worker extends Tii_Worker_Callable
+{
+	const E_CONNECT_FAIL = 1;
+	const E_SEND_FAIL = 2;
+
+	const STATUS_STARTING = 1;
+	const STATUS_RUNNING = 2;
+	const STATUS_SHUTDOWN = 4;
+	const STATUS_RELOADING = 8;
+
+	public $id = 0;//worker id
+	public $connections = [];//store all connections of clients
+	public $host;//localhost
+	public $dsn;//the Data Source Name, or DSN, contains the information required to connect
+
+	protected $protocol = null; /** @var Tii_Worker_Protocol */
+	protected $socket = null;//listening socket
+
+
+	/**
+	 * Construct.
+	 *
+	 * @param string $name
+	 * @param array $runtime
+	 * @param array  $options
+	 * @param string $host
+	 */
+	public function __construct($name = '', $runtime = [], $options = [], $host = NULL)
+
+
+	/**
+	 * Loaded together to run
+	 *
+	 * @param $name
+	 */
+	public static function runAll($name = NULL)
+
+
+	/**
+	 * Write statistics/status data to file
+	 *
+	 * @return void
+	 */
+	protected static function collectingStatusData()
+
+		/** @var Worker $worker */
+		$worker           = current(self::$workers);
+
+
+	/**
+	 * Monitor all child processes.
+	 *
+	 * @return void
+	 */
+	protected static function monitorWorkers()
+
+
+	/**
+	 * Exit current process.
+	 *
+	 * @return void
+	 */
+	protected static function exitAndClearAll()
+
+
+	/**
+	 * dashboard
+	 *
+	 * @return void
+	 */
+	protected static function dashboard()
+
+
+	/**
+	 * Fork some worker processes.
+	 *
+	 * @return void
+	 */
+	protected static function forks()
+
+		/** @var $worker Tii_Worker */
+		foreach (self::$workers as $worker) {
+
+
+
+	/**
+	 * Fork one worker process.
+	 *
+	 * @param Tii_Worker $worker
+	 * @throws Exception
+	 */
+	protected static function fork($worker)
+
+
+	/**
+	 * Redirect standard input and output.
+	 *
+	 * @throws Exception
+	 */
+	protected static function resetStd()
+
+
+	/**
+	 * Get worker id.
+	 *
+	 * @param int $worker_id
+	 * @param int $pid
+	 * @return int
+	 */
+	protected static function getId($worker_id, $pid)
+
+
+	/**
+	 * Set unix user and group for current process.
+	 *
+	 * @return void
+	 */
+	public function setUserAndGroup()
+
+
+	/**
+	 * Save pid.
+	 *
+	 * @throws Exception
+	 */
+	protected static function saveMasterPid()
+
+
+
+	/**
+	 * Init All worker instances.
+	 *
+	 * @return void
+	 */
+	protected static function initWorkers()
+
+		/** @var $worker Tii_Worker */
+		foreach (self::$workers as $worker) {
+
+
+
+	/**
+	 * Listen port.
+	 *
+	 * @throws Exception
+	 */
+	public function listen()
+
+
+	/**
+	 * Get unix user of current porcess.
+	 *
+	 * @return string
+	 */
+	protected static function getCurrentUser()
+
+
+	/**
+	 * Set process name.
+	 *
+	 * @param string $title
+	 * @return void
+	 */
+	protected static function setProcessTitle($title)
+
+
+
+	/**
+	 * Parse command.
+	 * php yourfile.php start | stop | restart | reload | status
+	 *
+	 * @return void
+	 */
+	protected static function parseCommand()
+
+
+
+	/**
+	 * Install signal handler.
+	 *
+	 * @return void
+	 */
+	protected static function installSignal()
+
+
+	/**
+	 * Reinstall signal handler.
+	 *
+	 * @return void
+	 */
+	protected static function reinstallSignal()
+
+
+	/**
+	 * Signal hander.
+	 *
+	 * @param int $signal
+	 */
+	public static function signalHandler($signal)
+
+
+	/**
+	 * Run as deamon mode.
+	 *
+	 * @throws Exception
+	 */
+	protected static function daemonize()
+
+
+	/**
+	 * Get all pids of worker processes.
+	 *
+	 * @return array
+	 */
+	protected static function getAllPids()
+
+
+	/**
+	 * Execute reload.
+	 *
+	 * @return void
+	 */
+	protected static function reload()
+
+
+	/**
+	 * Stop.
+	 *
+	 * @return void
+	 */
+	public static function quit()
+
+
+	/**
+	 * Stop current worker instance.
+	 *
+	 * @return void
+	 */
+	public function stop()
+
+
+	/**
+	 * Run worker instance.
+	 *
+	 * @return void
+	 */
+	public function start()
+
+	
+	/**
+	 * Accept a connection.
+	 *
+	 * @param resource $socket
+	 * @return void
+	 */
+	public function acceptConnection($socket)
+
+
+	/**
+	 * For udp package.
+	 *
+	 * @param resource $socket
+	 * @return bool
+	 */
+	public function acceptUdpConnection($socket)
+
+
+/**
+ * Register some protocols
+ */
+Tii_Event::register('tii.worker.protocols', function($protocols)
+
+
+
+/**
+ * Controller error abstract class
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: ErrorAbstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Application_Controller_ErrorAbstract extends Tii_Application_Controller_Abstract
+{
+	public function indexAction()
+	{}
+
+	/**
+	 * default error action
+	 */
+	abstract public function errorAction();
+
+
+/**
+ * Worker Timer
+ *
+ * example:
+ * Tii_Worker_Timer::add($time_interval, callback, [$arg1, $arg2..]);
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Timer.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Timer
+{
+	/**
+	 * Tasks that based on ALARM signal.
+	 * [
+	 *   run_time => [[$func, $args, $persistent, time_interval],[$func, $args, $persistent, time_interval],..]],
+	 *   run_time => [[$func, $args, $persistent, time_interval],[$func, $args, $persistent, time_interval],..]],
+	 *   ..
+	 * ]
+	 *
+	 * @var array
+	 */
+	protected static $tasks = [];
+
+	/**
+	 * event
+	 *
+	 * @var Tii_Worker_Event_Abstract
+	 */
+	protected static $event = null;
+
+	/**
+	 * Init.
+	 *
+	 * @param Tii_Worker_Event_Abstract $event
+	 * @return void
+	 */
+	public static function init($event = null)
+
+
+	/**
+	 * ALARM signal handler.
+	 *
+	 * @return void
+	 */
+	public static function signalHandler()
+
+
+	/**
+	 * Add a timer.
+	 *
+	 * @param $time_interval
+	 * @param $func
+	 * @param array $args
+	 * @param bool $persistent
+	 * @return bool|mixed
+	 */
+	public static function add($time_interval, $func, $args = [], $persistent = true)
+
+
+	/**
+	 * Tick.
+	 *
+	 * @return void
+	 */
+	public static function tick()
+
+
+	/**
+	 * Remove a timer.
+	 *
+	 * @param mixed $fd
+	 * @return bool
+	 */
+	public static function delete($fd)
+
+
+	/**
+	 * Remove all timers.
+	 *
+	 * @return void
+	 */
+	public static function delAll()
+
+
+/**
+ * EVENT event loop
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Event.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Event_Event extends Tii_Worker_Event_Abstract
+{
+	/**
+	 * Event base.
+	 * @var EventBase
+	 */
+	protected $base = null;
+
+
+	/**
+	 * Timer callback.
+	 *
+	 * @param $fd
+	 * @param $what
+	 * @param $param
+	 */
+	public function timerCallback($fd, $what, $param)
+
+
+/**
+ * Select event loop
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Select.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Event_Select extends Tii_Worker_Event_Abstract
+{
+	/**
+	 * Fds waiting for read event.
+	 *
+	 * @var array
+	 */
+	protected $read = [];
+
+	/**
+	 * Fds waiting for write event.
+	 *
+	 * @var array
+	 */
+	protected $write = [];
+
+	/**
+	 * Timer scheduler.
+	 * {['data':timer_id, 'priority':run_timestamp], ..}
+	 *
+	 * @var SplPriorityQueue
+	 */
+	protected $scheduler = null;
+
+	/**
+	 * All timer event listeners.
+	 * [[func, args, flag, timer_interval], ..]
+	 *
+	 * @var array
+	 */
+	protected $timers = [];
+
+	/**
+	 * Select timeout.
+	 *
+	 * @var int
+	 */
+	protected $timeout = 100000000;
+
+	/**
+	 * Paired socket channels
+	 *
+	 * @var array
+	 */
+	protected $channel = [];
+
+	/**
+	 * Construct.
+	 */
+	public function __construct()
+
+
+	/**
+	 * Signal handler.
+	 *
+	 * @param int $signal
+	 */
+	public function signalHandler($signal)
+
+
+	/**
+	 * Tick for timer.
+	 *
+	 * @return void
+	 */
+	protected function tick()
+
+
+/**
+ * Dao Query Helper
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Dao.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Application_Helper_Dao extends Tii_Application_Abstract
+{
+	/**
+	 * @param Tii_Dao $dao
+	 * @param $table
+	 * @param array $params
+	 * @return array
+	 */
+	public function queryService(Tii_Dao $dao, $table, array $params = [])
+
+
+	/**
+	 * @param Tii_Dao $dao
+	 * @param $table
+	 * @return array
+	 */
+	public function simpleQueryService(Tii_Dao $dao, $table)
+
+
+	/**
+	 * 查询$table的数据
+	 *
+	 * @param Tii_Dao $dao
+	 * @param $table
+	 * @param array $option [
+	 * 'columns' => '',
+	 * 'selection' => 'xxx=?',
+	 * 'selection_args' => ['val'],
+	 * 'group_by' => 'some field',
+	 * 'having' => '',
+	 * 'order_by' => '',
+	 * 'limit' => 10,
+	 * 'offset' => '',//Tii_Dao_Common_QueryHelper::getPageOffset($page, $ppp, $totalnum)
+	 * ];
+	 * @return array|multitype
+	 */
+	public function simpleQuery(Tii_Dao $dao, $table, array $option)
+
+
+	/**
+	 * The amount of data query $table
+	 *
+	 * @param Tii_Dao $dao
+	 * @param $table
+	 * @param array $option [
+	 * 'selection' => 'xxx=?',
+	 * 'selection_args' => ['val'],
+	 * 'group_by' => 'some field',
+	 * 'having' => '',
+	 * ];
+	 * @return int
+	 */
+	public function getSimpleTotalNumber(Tii_Dao $dao, $table, array $option)
+
+
+/**
+ * EV event loop
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Ev.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Event_Ev extends Tii_Worker_Event_Abstract
+{
+	public function add($fd, $flag, $func, $args = [])
+	{
+		$callback = function ($event, $socket) use ($fd, $func) {
+			try {
+				call_user_func($func, $fd);
+			} catch (Exception $e) {
+				Tii_Logger::debug($e->getMessage());
+				exit(250);
+			}
+		};
+
+		switch ($flag) {
+			case self::EV_SIGNAL:
+				$this->signals[$fd] = new EvSignal($fd, $callback);
+				return true;
+			case self::EV_TIMER:
+			case self::EV_TIMER_ONCE:
+				$repeat = $flag == self::EV_TIMER_ONCE ? 0 : $fd;
+				$param = [$func, $args, $flag, $fd, self::$id];
+				$this->timers[self::$id] = new EvTimer($fd, $repeat, [$this, 'timerCallback'], $param);
+				return self::$id++;
+			default :
+				$fd_key = (int)$fd;
+				$real_flag = $flag === self::EV_READ ? Ev::READ : Ev::WRITE;
+				$event = new EvIo($fd, $real_flag, $callback);
+				$this->events[$fd_key][$flag] = $event;
+				return true;
+		}
+
+	}
+
+	public function delete($fd, $flag)
+	{
+		switch ($flag) {
+			case self::EV_READ:
+			case self::EV_WRITE:
+				$fd_key = (int)$fd;
+				if (isset($this->events[$fd_key][$flag])) {
+					$this->events[$fd_key][$flag]->stop();
+					unset($this->events[$fd_key][$flag]);
+				}
+				if (empty($this->events[$fd_key])) {
+					unset($this->events[$fd_key]);
+				}
+				break;
+			case  self::EV_SIGNAL:
+				$fd_key = (int)$fd;
+				if (isset($this->signals[$fd_key])) {
+					$this->events[$fd_key][$flag]->stop();
+					unset($this->signals[$fd_key]);
+				}
+				break;
+			case self::EV_TIMER:
+			case self::EV_TIMER_ONCE:
+				if (isset($this->timers[$fd])) {
+					$this->timers[$fd]->stop();
+					unset($this->timers[$fd]);
+				}
+				break;
+		}
+		return true;
+	}
+
+	/**
+	 * Timer callback.
+	 *
+	 * @param EvWatcher $event
+	 */
+	public function timerCallback($event)
+
+
+/**
+ * Worker Event
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Event.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Event
+{
+	const EV_READ = 1;
+	const EV_WRITE = 2;
+	const EV_SIGNAL = 4;
+	const EV_TIMER = 8;
+	const EV_TIMER_ONCE = 16;
+
+	/**
+	 * @return Tii_Worker_Event_Abstract
+	 */
+	public static function instance()
+
+
+	/**
+	 * Get event loop name.
+	 *
+	 * @return string
+	 */
+	public static function getDriverName()
+
+
+/**
+ * Event Abstract
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+abstract class Tii_Worker_Event_Abstract extends Tii_Worker_Event
+{
+	/**
+	 * All listeners for read/write event.
+	 *
+	 * @var array
+	 */
+	protected $events = [];
+
+	/**
+	 * Event listeners of signal.
+	 *
+	 * @var array
+	 */
+	protected $signals = [];
+
+	/**
+	 * All timer event listeners.
+	 * [func, args, flag, arg1,arg2,...]
+	 *
+	 * @var array
+	 */
+	protected $timers = [];
+
+	/**
+	 * Timer id.
+	 *
+	 * @var int
+	 */
+	protected static $id = 1;
+
+	/**
+	 * Add event listener to event loop.
+	 *
+	 * @param $fd
+	 * @param $flag
+	 * @param callable $func
+	 * @param array $args
+	 * @return mixed
+	 */
+	abstract public function add($fd, $flag, $func, $args = []);
+
+	/**
+	 * Remove event listener from event loop.
+	 *
+	 * @param mixed $fd
+	 * @param int $flag
+	 * @return bool
+	 */
+	abstract public function delete($fd, $flag);
+
+	/**
+	 * Remove all timers.
+	 *
+	 * @return void
+	 */
+	abstract public function clearAllTimer();
+
+	/**
+	 * Main loop.
+	 *
+	 * @return void
+	 */
+	abstract public function loop();
+
+
+
+/**
+ * Connection Abstract
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Connection.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Connection extends Tii_Worker_Callable
+{
+	/**
+	 * Statistics for status command.
+	 *
+	 * @var array
+	 */
+	public static $statistics = [
+
+
+/**
+ * Tcp Connection
+ *
+ * @author Alacner Zhang <alacner@gmail.com>
+ * @version $Id: Tcp.php 8246 2016-10-27 02:03:30Z alacner $
+ */
+
+class Tii_Worker_Connection_Tcp extends Tii_Worker_Connection_Abstract
+{
+	const READ_BUFFER_SIZE = 65535;
+
+	const STATUS_INITIAL = 0;
+	const STATUS_CONNECTING = 1;
+	const STATUS_ESTABLISH = 2;
+	const STATUS_CLOSING = 4;
+	const STATUS_CLOSED = 8;
+
+	/**
+	 * Connection->id.
+	 *
+	 * @var int
+	 */
+	public $id = 0;
+
+	/**
+	 * Sets the maximum send buffer size for the current connection.
+	 * OnBufferFull callback will be emited When the send buffer is full.
+	 *
+	 * @var int
+	 */
+	public $maxSendBufferSize = 1048576;
+
+	/**
+	 * Maximum acceptable packet size.
+	 *
+	 * @var int
+	 */
+	public $maxPackageSize = 10485760;
+
+	/**
+	 * Id recorder.
+	 *
+	 * @var int
+	 */
+	protected static $idRecorder = 1;
+
+	/**
+	 * Send buffer.
+	 *
+	 * @var string
+	 */
+	protected $sendBuffer = '';
+
+	/**
+	 * Receive buffer.
+	 *
+	 * @var string
+	 */
+	protected $recvBuffer = '';
+
+	/**
+	 * Current package length.
+	 *
+	 * @var int
+	 */
+	protected $currentPackageLength = 0;
+
+	/**
+	 * Connection status.
+	 *
+	 * @var int
+	 */
+	protected $status = self::STATUS_ESTABLISH;
+
+	/**
+	 * Is paused.
+	 *
+	 * @var bool
+	 */
+	protected $isPaused = false;
+
+
+	/**
+	 * Construct.
+	 *
+	 * @param resource $socket
+	 * @param string $remote_address
+	 * @param Tii_Worker $worker
+	 */
+	public function __construct($socket, $remote_address, $worker = NULL)
+
+
+	/**
+	 * Pauses the reading of data. That is onMessage will not be emitted. Useful to throttle back an upload.
+	 *
+	 * @return void
+	 */
+	public function pauseRecv()
+
+
+	/**
+	 * Resumes reading after a call to pauseRecv.
+	 *
+	 * @return void
+	 */
+	public function resumeRecv()
+
+
+	/**
+	 * Base read handler.
+	 *
+	 * @param resource $socket
+	 * @param bool $check_eof
+	 * @return void
+	 */
+	public function baseRead($socket, $check_eof = true)
+
+
+	/**
+	 * Base write handler.
+	 *
+	 * @return void|bool
+	 */
+	public function baseWrite()
+
+
+	/**
+	 * This method pulls all the data out of a readable stream, and writes it to the supplied destination.
+	 *
+	 * @param TcpConnection $dest
+	 * @return void
+	 */
+	public function pipe($dest)
+
+
+	/**
+	 * Remove $length of data from receive buffer.
+	 *
+	 * @param int $length
+	 * @return void
+	 */
+	public function consumeRecvBuffer($length)
+
+
+	/**
+	 * Get the real socket.
+	 *
+	 * @return resource
+	 */
+	public function getSocket()
+
+
+	/**
+	 * Check whether the send buffer is full.
+	 *
+	 * @return void
+	 */
+	protected function checkBufferIsFull()
+
+
+	/**
+	 * Destroy connection.
+	 *
+	 * @return void
+	 */
+	public function destroy()
+
+
+	/**
+	 * Destruct.
+	 *
+	 * @return void
+	 */
+	public function __destruct()
