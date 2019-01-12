@@ -1,0 +1,235 @@
+什么是Exif?
+
+　　Exif是英语Exchangeable Image File(可交换图像文件)的缩写，最初由日本电子工业发展协会(JEIDA --Japan Electronic Industry Development Association) 制订，目前的版本是修改发表于1998年6月的2.1版。国际标准化组织(ISO)正在制订的相机文件设计标准（DCF -- Design role for Camera File system）可能以Exif2.1为基础。
+
+　　Exif 文件实际是JPEG文件的一种，遵从JPEG标准，只是在文件头信息中增加了有关拍摄信息的内容和索引图。所以你可以使用任何支持JPEG格式的图像工具软件观看或修改Exif文件，但，打开时可能看不到Exif信息，一旦修改，Exif信息可能丢失。
+
+Exif的标识
+
+　　所有的JPEG文件以字符串“0xFFD8”开头，并以字符串“0xFFD9”结束。文件头中有一系列“0xFF??”格式的字符串，称为“标识”，用来标记JPEG文件的信息段。“0xFFD8”表示图像信息开始，“0xFFD9”表示图像信息结束，这两个标识后面没有信息，而其它标识紧跟一些信息字符。
+
+　　0xFFE0 -- 0xFFEF之间的标识符称为“应用标记”，没有被常规JPEG文件利用，Exif正是利用这些信息串记录拍摄信息如快门速度、光圈值等，甚至可以包括全球定位信息。按照Exif2.1标准对这些标识符的定义，数码相机可以把各种拍摄信息记入数码图像中，应用软件可以读取这些数据，再按照Exif2.1标准，检索出它们的具体含义,一般而言包括以下一些信息：
+
+Image Description 图像描述、来源. 指生成图像的工具 
+Artist作者 有些相机可以输入使用者的名字 
+Make 生产者 指产品生产厂家 
+Model 型号 指设备型号 
+Orientation方向 有的相机支持，有的不支持 
+XResolution/YResolution X/Y方向分辨率 本栏目已有专门条目解释此问题。 
+ResolutionUnit分辨率单位 一般为PPI 
+Software软件 显示固件Firmware版本 
+DateTime日期和时间 
+YCbCrPositioning 色相定位 
+ExifOffsetExif信息位置，定义Exif在信息在文件中的写入，有些软件不显示。 
+ExposureTime 曝光时间 即快门速度 
+FNumber光圈系数 
+ExposureProgram曝光程序 指程序式自动曝光的设置，各相机不同,可能是Sutter Priority（快门优先）、Aperture Priority（快门优先）等等。 
+ISO speed ratings感光度 
+ExifVersionExif版本 
+DateTimeOriginal创建时间 
+DateTimeDigitized数字化时间 
+ComponentsConfiguration图像构造（多指色彩组合方案） 
+CompressedBitsPerPixel(BPP)压缩时每像素色彩位 指压缩程度 
+ExposureBiasValue曝光补偿。 
+MaxApertureValue最大光圈 
+MeteringMode测光方式， 平均式测光、中央重点测光、点测光等。 
+Lightsource光源 指白平衡设置 
+Flash是否使用闪光灯。 
+FocalLength焦距，一般显示镜头物理焦距，有些软件可以定义一个系数，从而显示相当于35mm相机的焦距 MakerNote(User Comment)作者标记、说明、记录 
+FlashPixVersionFlashPix版本 （个别机型支持） 
+ColorSpace色域、色彩空间 
+ExifImageWidth(Pixel X Dimension)图像宽度 指横向像素数 
+ExifImageLength(Pixel Y Dimension)图像高度 指纵向像素数 
+Interoperability IFD通用性扩展项定义指针 和TIFF文件相关，具体含义不详 
+FileSource源文件 Compression压缩比。
+
+
+
+
+
+<?
+/**
+* 获取图象信息的函数
+*
+* 一个全面获取图象信息的函数
+*
+* @access public
+* @param string $img 图片路径
+* @return array
+*/
+function GetImageInfoVal($ImageInfo,$val_arr) {
+    $InfoVal    =    "未知";
+    foreach($val_arr as $name=>$val) {
+        if ($name==$ImageInfo) {
+            $InfoVal    =    &$val;
+            break;
+        }
+    }
+    return $InfoVal;
+}
+function GetImageInfo($img) {
+    
+
+    
+    $imgtype            =    array("", "GIF", "JPG", "PNG", "SWF", "PSD", "BMP", "TIFF(intel byte order)", "TIFF(motorola byte order)", "JPC", "JP2", "JPX", "JB2", "SWC", "IFF", "WBMP", "XBM");
+    $Orientation        =    array("", "top left side", "top right side", "bottom right side", "bottom left side", "left side top", "right side top", "right side bottom", "left side bottom");
+    $ResolutionUnit        =    array("", "", "英寸", "厘米");
+    $YCbCrPositioning    =    array("", "the center of pixel array", "the datum point");
+    $ExposureProgram    =    array("未定义", "手动", "标准程序", "光圈先决", "快门先决", "景深先决", "运动模式", "肖像模式", "风景模式");
+    $MeteringMode_arr    =    array(
+        "0"        =>    "未知",
+        "1"        =>    "平均",
+        "2"        =>    "中央重点平均测光",
+        "3"        =>    "点测",
+        "4"        =>    "分区",
+        "5"        =>    "评估",
+        "6"        =>    "局部",
+        "255"    =>    "其他"
+        );
+    $Lightsource_arr    =    array(
+        "0"        =>    "未知",
+        "1"        =>    "日光",
+        "2"        =>    "荧光灯",
+        "3"        =>    "钨丝灯",
+        "10"    =>    "闪光灯",
+        "17"    =>    "标准灯光A",
+        "18"    =>    "标准灯光B",
+        "19"    =>    "标准灯光C",
+        "20"    =>    "D55",
+        "21"    =>    "D65",
+        "22"    =>    "D75",
+        "255"    =>    "其他"
+        );
+    $Flash_arr            =    array(
+        "0"        =>    "flash did not fire",
+        "1"        =>    "flash fired",
+        "5"        =>    "flash fired but strobe return light not detected",
+        "7"        =>    "flash fired and strobe return light detected",
+        );
+    
+    $exif = exif_read_data ($img,"IFD0");
+    if ($exif===false) {
+        $new_img_info    =    array ("文件信息"        =>    "没有图片EXIF信息");
+    }
+    else
+    {
+        $exif = exif_read_data ($img,0,true);
+        $new_img_info    =    array (
+            "文件信息"        =>    "-----------------------------",
+            "文件名"        =>    $exif[FILE][FileName],
+            "文件类型"        =>    $imgtype[$exif[FILE][FileType]],
+            "文件格式"        =>    $exif[FILE][MimeType],
+            "文件大小"        =>    $exif[FILE][FileSize],
+            "时间戳"        =>    date("Y-m-d H:i:s",$exif[FILE][FileDateTime]),
+            "图像信息"        =>    "-----------------------------",
+            "图片说明"        =>    $exif[IFD0][ImageDescription],
+            "制造商"        =>    $exif[IFD0][Make],
+            "型号"            =>    $exif[IFD0][Model],
+            "方向"            =>    $Orientation[$exif[IFD0][Orientation]],
+            "水平分辨率"    =>    $exif[IFD0][XResolution].$ResolutionUnit[$exif[IFD0][ResolutionUnit]],
+            "垂直分辨率"    =>    $exif[IFD0][YResolution].$ResolutionUnit[$exif[IFD0][ResolutionUnit]],
+            "创建软件"        =>    $exif[IFD0][Software],
+            "修改时间"        =>    $exif[IFD0][DateTime],
+            "作者"            =>    $exif[IFD0][Artist],
+            "YCbCr位置控制"    =>    $YCbCrPositioning[$exif[IFD0][YCbCrPositioning]],
+            "版权"            =>    $exif[IFD0][Copyright],
+            "摄影版权"        =>    $exif[COMPUTED][Copyright.Photographer],
+            "编辑版权"        =>    $exif[COMPUTED][Copyright.Editor],
+            "拍摄信息"        =>    "-----------------------------",
+            "Exif版本"        =>    $exif[EXIF][ExifVersion],
+            "FlashPix版本"    =>    "Ver. ".number_format($exif[EXIF][FlashPixVersion]/100,2),
+            "拍摄时间"        =>    $exif[EXIF][DateTimeOriginal],
+            "数字化时间"    =>    $exif[EXIF][DateTimeDigitized],
+            "拍摄分辨率高"    =>    $exif[COMPUTED][Height],
+            "拍摄分辨率宽"    =>    $exif[COMPUTED][Width],
+            /*
+            The actual aperture value of lens when the image was taken.
+            Unit is APEX.
+            To convert this value to ordinary F-number(F-stop),
+            calculate this value's power of root 2 (=1.4142).
+            For example, if the ApertureValue is '5', F-number is pow(1.41425,5) = F5.6.
+            */
+            "光圈"            =>    $exif[EXIF][ApertureValue],
+            "快门速度"        =>    $exif[EXIF][ShutterSpeedValue],
+            "快门光圈"        =>    $exif[COMPUTED][ApertureFNumber],
+            "最大光圈值"    =>    "F".$exif[EXIF][MaxApertureValue],
+            "曝光时间"        =>    $exif[EXIF][ExposureTime],
+            "F-Number"        =>    $exif[EXIF][FNumber],
+            "测光模式"        =>    GetImageInfoVal($exif[EXIF][MeteringMode],$MeteringMode_arr),
+            "光源"            =>    GetImageInfoVal($exif[EXIF][LightSource], $Lightsource_arr),
+            "闪光灯"        =>    GetImageInfoVal($exif[EXIF][Flash], $Flash_arr),
+            "曝光模式"        =>    ($exif[EXIF][ExposureMode]==1?"手动":"自动"),
+            "白平衡"        =>    ($exif[EXIF][WhiteBalance]==1?"手动":"自动"),
+            "曝光程序"        =>    $ExposureProgram[$exif[EXIF][ExposureProgram]],
+            /*
+            Brightness of taken subject, unit is APEX. To calculate Exposure(Ev) from BrigtnessValue(Bv), you must add SensitivityValue(Sv).
+            Ev=Bv+Sv   Sv=log((ISOSpeedRating/3.125),2)
+            ISO100:Sv=5, ISO200:Sv=6, ISO400:Sv=7, ISO125:Sv=5.32. 
+            */
+            "曝光补偿"        =>    $exif[EXIF][ExposureBiasValue]."EV",
+            "ISO感光度"        =>    $exif[EXIF][ISOSpeedRatings],
+            "分量配置"        =>    (bin2hex($exif[EXIF][ComponentsConfiguration])=="01020300"?"YCbCr":"RGB"),//'0x04,0x05,0x06,0x00'="RGB" '0x01,0x02,0x03,0x00'="YCbCr"
+            "图像压缩率"    =>    $exif[EXIF][CompressedBitsPerPixel]."Bits/Pixel",
+            "对焦距离"        =>    $exif[COMPUTED][FocusDistance]."m",
+            "焦距"            =>    $exif[EXIF][FocalLength]."mm",
+            "等价35mm焦距"    =>    $exif[EXIF][FocalLengthIn35mmFilm]."mm",
+            /*
+            Stores user comment. This tag allows to use two-byte character code or unicode. First 8 bytes describe the character code. 'JIS' is a Japanese character code (known as Kanji).
+            '0x41,0x53,0x43,0x49,0x49,0x00,0x00,0x00':ASCII
+            '0x4a,0x49,0x53,0x00,0x00,0x00,0x00,0x00':JIS
+            '0x55,0x4e,0x49,0x43,0x4f,0x44,0x45,0x00':Unicode
+            '0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00':Undefined
+            */
+            "用户注释编码"    =>    $exif[COMPUTED][UserCommentEncoding],
+            "用户注释"        =>    $exif[COMPUTED][UserComment],
+            "色彩空间"        =>    ($exif[EXIF][ColorSpace]==1?"sRGB":"Uncalibrated"),
+            "Exif图像宽度"    =>    $exif[EXIF][ExifImageLength],
+            "Exif图像高度"    =>    $exif[EXIF][ExifImageWidth],
+            "文件来源"        =>    (bin2hex($exif[EXIF][FileSource])==0x03?"digital still camera":"unknown"),
+            "场景类型"        =>    (bin2hex($exif[EXIF][SceneType])==0x01?"A directly photographed image":"unknown"),
+            "缩略图文件格式"    =>    $exif[COMPUTED][Thumbnail.FileType],
+            "缩略图Mime格式"    =>    $exif[COMPUTED][Thumbnail.MimeType]
+        );
+    }
+    return $new_img_info;
+}
+
+$innerhtml    =    "";
+$exif    =    GetImageInfo($_GET['img']);
+$innerhtml    .=    "<TABLE>";
+
+foreach($exif as $name=>$val) {
+    $innerhtml    .=    "<TR><TD>{$name}</TD><TD>{$val}</TD></TR>";
+}
+
+$innerhtml    .=    "<TR><TD colspan=\"2\">";
+if ($_GET['img']) {
+    $image = exif_thumbnail($_GET['img']);
+} else {
+    $image = false;
+}
+if ($image!==false) {
+    $innerhtml    .=    "<img src=\"thumbnail.php?img=".$_GET['img']."\">";
+} else {
+    // no thumbnail available, handle the error here
+    $innerhtml    .=    "No thumbnail available";
+}
+
+$innerhtml    .=    "</TD></TR></TABLE>";
+?>
+<html>
+<head> 
+<title>图片信息</title>
+<meta http-equiv="Content-Type" content="text/html; charset=??????">
+</head>
+<body>
+<SCRIPT>
+<!--
+//初始化内容值
+parent.followTd<?=$_GET['r_id'];?>.innerHTML='<?=$innerhtml;?>';
+//已读取
+parent.document.images.followImg<?=$_GET['r_id'];?>.loaded='yes';
+-->
+</SCRIPT>
+</body>
+</html>

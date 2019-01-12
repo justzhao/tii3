@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 入口程序
+ *
+ * @author Yametei
+ * @version $Id: shell 520 2012-04-08 08:03:18Z yametei $
+ */
+
+define('DESIRE_PROCESSOR', 'Mordor_Processor_Dubbo');
+
+$_directories = array(
+	dirname(__FILE__) . '/configs/local/configuration.php',// local first
+	dirname(__FILE__) . '/configs/configuration.php',
+);
+
+foreach ($_directories as $_file) {
+	if (is_file($_file)) {
+		require_once $_file;
+		break;
+	}
+}
+unset($_directories, $_file);
+
+if (!class_exists('Desire_Version')) {//check framework has already loaded
+	trigger_error("The desire framework not loaded correctly", E_USER_ERROR);
+}
+
+//Desire_Application::run();
+
+$worker = new Desire_Worker("http://0.0.0.0:1206", [
+	'count' => 1,
+]);
+$worker->onMessage = function($connection, $data)
+{
+	list ($_SERVER, $_GET, $_POST, $_COOKIE, $_REQUEST, $_FILES, $HTTP_RAW_POST_DATA) = $data;
+	print_r($_SERVER);
+	Desire_Event::register('desire.application.processor.http.display', function($processor) use ($connection){
+		$connection->close([200, json_encode($processor->getView())]);
+	});
+
+	Desire_Application::run();
+};
+
+Desire_Worker::run();

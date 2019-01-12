@@ -1,0 +1,79 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 入口程序
+ *
+ * @author Yametei
+ * @version $Id: shell 520 2012-04-08 08:03:18Z yametei $
+ */
+
+define('DESIRE_SAPI', 'wm');
+
+$_directories = array(
+	dirname(__FILE__) . '/configs/local/configuration.php',// local first
+	dirname(__FILE__) . '/configs/configuration.php',
+);
+
+foreach ($_directories as $_file) {
+	if (is_file($_file)) {
+		require_once $_file;
+		break;
+	}
+}
+unset($_directories, $_file);
+
+if (!class_exists('Desire_Version')) {//check framework has already loaded
+	trigger_error("The desire framework not loaded correctly", E_USER_ERROR);
+}
+
+$worker = new Tattoo_Worker('text://0.0.0.0:1234');
+
+$worker->onMessage = function($connection, $msg) {
+    // 给connection临时设置一个lastMessageTime属性，用来记录上次收到消息的时间
+    $connection->lastMessageTime = time();
+    // 其它业务逻辑...
+};
+
+// 进程启动后设置一个每秒运行一次的定时器
+$worker->onWorkerStart = function($worker) {
+    Tattoo_Worker_Timer::add(1, function()use($worker){
+        $time_now = time();
+        foreach($worker->connections as $connection) {
+            // 有可能该connection还没收到过消息，则lastMessageTime设置为当前时间
+            if (empty($connection->lastMessageTime)) {
+                $connection->lastMessageTime = $time_now;
+                continue;
+            }
+            // 上次通讯时间间隔大于心跳间隔，则认为客户端已经下线，关闭连接
+            if ($time_now - $connection->lastMessageTime > 10) {
+                $connection->close();
+            }
+        }
+    });
+};
+//print_r([$worker, $worker2, $worker3]);
+Tattoo_Worker::run();
+/*
+require_once 'workerman/Autoloader.php';
+use Workerman\Worker;
+
+// #### http worker ####
+$http_worker = new Worker("http://0.0.0.0:2345");
+
+// 4 processes
+$http_worker->count = 4;
+
+// Emitted when data received
+$http_worker->onMessage = function($connection, $data)
+{
+	Desire_Application::run();
+	$connection->send(json_encode([
+		$_REQUEST,
+		$_POST,
+		//Dzi_Service::region()->getById(mt_rand(1, 21)),
+		time()
+	]));
+};
+
+// run all workers
+Worker::runAll();*/

@@ -1,8 +1,8 @@
 Tii PHP Framework
 =======
 
-* [Reference](docs/en/)
-* [中文手册](docs/zh-CN/)
+* [Reference](en/index.html)
+* [中文手册](zh-CN/index.html)
 
 
 Error

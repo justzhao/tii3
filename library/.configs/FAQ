@@ -1,0 +1,106 @@
+FAQ:
+
+class `Tattoo_Dubbo' not found, usage:
+1) Desire_Config::set('desire.library.Tattoo', '/path/to/library');
+2) put class file in /path/to/application/tattoo/library
+3) Desire_Config::set('desire.library.*', '/path/to/libraries') || set in desire.config.php
+
+
+---------------------
+session
+
+class Foobar_Application_SessionHandler extends Desire_Application_SessionHandler_Dao
+{
+	public function __construct()
+	{
+		parent::__construct(Foobar_Dao::callMaster());
+	}
+}
+---------------------
+
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE IF NOT EXISTS `session` (
+  `id` varchar(40) NOT NULL,
+  `expired` int(10) unsigned DEFAULT NULL,
+  `data` blob,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+------------
+
+---------------------
+logger
+
+class Foobar_LoggerHandler extends Desire_Logger_Dao
+{
+	public function __construct()
+	{
+		parent::__construct(Foobar_Dao::callMaster());
+	}
+}
+---------------------
+
+DROP TABLE IF EXISTS `logger`;
+CREATE TABLE IF NOT EXISTS `logger` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `priority` tinyint(4) NOT NULL DEFAULT '0',
+  `message` varchar(255) NOT NULL DEFAULT '',
+  `extras` longtext,
+  `gmt_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+---------------------
+Desire_Event
+---------------------
+
+'filters' => array(
+	'*' => array_map(function($s){return Desire_Filesystem::concat($s, 'hooks');}, Desire_Filesystem::getFolders('/path/to/application'), false)),
+),
+
+Desire_Event::filter('desire.application.processor', $processor); /** @var $processor Desire_Application_Processor_Abstract */
+Desire_Event::filter('desire.application.processor.http.url', $url);
+Desire_Event::filter('desire.validators', Desire_Config::get("desire.validators", array()));
+Desire_Event::filter('desire.filename', $filename, $type, $module, $filename, $ext, $partition);
+
+Desire_Event::action('desire.exception.handler', $exception);
+Desire_Event::action('desire.shutdown.handler');
+Desire_Event::action('desire.error.handler', $errno , $errstr, $errfile, $errline, $errcontext));
+
+
+---------------------
+Refresh Cache contents
+---------------------
+
+	public function init()
+	{
+		Desire_Event::register('desire.application.processor.http.response.cached',
+			function($cached) {
+				return preg_replace([
+					"|timestamp: \d+|",
+				], [
+					sprintf("timestamp: %s", time()),
+				], $cached);
+			}
+		);
+	}
+
+---------------------
+I18N
+---------------------
+
+Desire::validator
+	desire.validator.messages.*
+	desire.validator.alias.*
+
+
+---------------------
+Desire::validator
+---------------------
+
+Desire::validator(array('text' => "12312341234"), array(
+	'text' => array('regex' => array("|^\d{11}$|", " must be length is 11 numbers")),
+));
+
+@see lang-default.config.php to configure message for readable.

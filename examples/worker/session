@@ -1,0 +1,97 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 入口程序
+ *
+ * @author Yametei
+ * @version $Id: shell 520 2012-04-08 08:03:18Z yametei $
+ */
+
+define('DESIRE_SAPI', 'wm');
+
+$_directories = array(
+	dirname(__FILE__) . '/configs/local/configuration.php',// local first
+	dirname(__FILE__) . '/configs/configuration.php',
+);
+
+foreach ($_directories as $_file) {
+	if (is_file($_file)) {
+		require_once $_file;
+		break;
+	}
+}
+unset($_directories, $_file);
+
+if (!class_exists('Desire_Version')) {//check framework has already loaded
+	trigger_error("The desire framework not loaded correctly", E_USER_ERROR);
+}
+
+$worker = new Tattoo_Worker("text://0.0.0.0:2345");
+$worker->onMessage = function($connection, $data)
+{
+	// send data to client
+	$connection->send("text $data \n");
+};
+$worker2 = new Tattoo_Worker("tcp://0.0.0.0:2346", [], [
+	'count' => 3,
+]);
+$worker2->onMessage = function($connection, $data)
+{
+	// send data to client
+	$connection->send("tcp $data \n");
+};
+$worker3 = new Tattoo_Worker("chunk://0.0.0.0:2347", [], [
+	'count' => 4,
+]);
+$worker3->onMessage = function($connection, $data)
+{
+	// send data to client
+	$connection->send("frame $data \n");
+};
+
+$worker4 = new Tattoo_Worker("udp://0.0.0.0:2348", [], [
+	'count' => 4,
+]);
+$worker4->onMessage = function($connection, $data)
+{
+	var_dump($data);
+	$connection->send("udp $data \n");
+};
+
+
+/*$worker5 = new Tattoo_Worker('unix:///tmp/wm.sock', [], [
+	'count' => 4,
+]);
+$worker5->onMessage = function($connection, $data)
+{
+	// send data to client
+	$connection->send("unix $data \n");
+};*/
+
+
+//print_r([$worker, $worker2, $worker3]);
+Tattoo_Worker::run();
+/*
+require_once 'workerman/Autoloader.php';
+use Workerman\Worker;
+
+// #### http worker ####
+$http_worker = new Worker("http://0.0.0.0:2345");
+
+// 4 processes
+$http_worker->count = 4;
+
+// Emitted when data received
+$http_worker->onMessage = function($connection, $data)
+{
+	Desire_Application::run();
+	$connection->send(json_encode([
+		$_REQUEST,
+		$_POST,
+		//Dzi_Service::region()->getById(mt_rand(1, 21)),
+		time()
+	]));
+};
+
+// run all workers
+Worker::runAll();*/

@@ -1,0 +1,22 @@
+<?php
+$this->output($now);
+echo $this->getController()->getBlazeHelper()->pager(array(
+	'num' => 100,//需要分页的总条数
+	'perpage' => 10,//每页页数
+	'curpage' => 1,//当前页码
+	'mpurl' => $this->url() . '?page=',//页面url前半部分
+	'ext' => '',//页面url后半部分
+	'page' => 10,//每版面显示几个页码
+));
+?>
+<script>
+	var x = '<?php $this->output($var, 'javascript'); ?>';
+	alert('<?php $this->output($var, 'javascript');?>');
+</script>
+<a href="#" onclick="alert('<?php $this->output($var, 'javascript');?>')">test</a>
+
+<?php
+$this->getController()->getHelper()->csrf()->getName();
+$this->getController()->getHelper()->csrf()->getValue();
+$this->getController()->getHelper()->csrf()->getInput();
+?>

@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 入口程序
+ *
+ * @author Yametei
+ * @version $Id: shell 520 2012-04-08 08:03:18Z yametei $
+ */
+
+//require_once '/workspace/desire/framework/build/Desire-2.16.0223.1627.php';
+require_once '/workspace/desire/framework/library/Bootstrap.php';
+Desire_Config::setDir('/workspace/desire/framework/library/.configs');
+
+//Desire_Worker::$startFile = 'sss';
+
+require_once '/workspace/desire/framework/library/.configs/hooks/desire.worker.protocols/websocket.php';
+//Desire_Logger::$print_backtrace_priority = Desire_Logger_Constant::NOTICE;;
+$worker = new Desire_Worker("websocket://0.0.0.0:8313");
+// 进程启动时
+$worker->onWorkerStart = function()
+{
+};
+
+$worker->onMessage = function($connection, $data)
+{
+	echo "recv: $data\n";
+	$connection->send("###" . $data);
+};
+
+Desire_Worker::run();

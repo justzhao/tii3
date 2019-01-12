@@ -1,0 +1,47 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 入口程序
+ *
+ * @author Yametei
+ * @version $Id: shell 520 2012-04-08 08:03:18Z yametei $
+ */
+
+//require_once '/workspace/desire/framework/build/Desire-2.16.0223.1627.php';
+require_once '/workspace/desire/framework/library/Bootstrap.php';
+Desire_Config::setDir('/workspace/desire/framework/library/.configs');
+
+//Desire_Worker::$startFile = 'mysql_proxy';
+
+require_once '/workspace/desire/framework/library/.configs/hooks/desire.worker.protocols/websocket.php';
+//Desire_Logger::$print_backtrace_priority = Desire_Logger_Constant::NOTICE;;
+$worker = new Desire_Worker();
+// 进程启动时
+$worker->onWorkerStart = function()
+{
+    // 以websocket协议连接远程websocket服务器
+	//$ws_connection = new Desire_Worker_Connection_Async("ws://echo.websocket.org:80");
+	$ws_connection = new Desire_Worker_Connection_Async("ws://127.0.0.1:8313");
+    // 连上后发送hello字符串
+    $ws_connection->onConnect = function($connection){
+		Desire_Worker_Timer::add(3, function() use ($connection){
+			$connection->send('hi, now is ' . Desire_Time::format());
+		});
+    };
+    // 远程websocket服务器发来消息时
+    $ws_connection->onMessage = function($connection, $data){
+        echo "recv: $data\n";
+    };
+    // 连接上发生错误时，一般是连接远程websocket服务器失败错误
+    $ws_connection->onError = function($connection, $code, $msg){
+        echo "error: $msg\n";
+    };
+    // 当连接远程websocket服务器的连接断开时
+    $ws_connection->onClose = function($connection){
+        echo "connection closed\n";
+    };
+    // 设置好以上各种回调后，执行连接操作
+    $ws_connection->connect();
+};
+
+Desire_Worker::run();

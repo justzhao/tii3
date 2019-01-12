@@ -1,0 +1,40 @@
+<?php
+require_once __DIR__ . '/../../library/Bootstrap.php';
+Desire_Config::setDir(__DIR__.'/../');
+
+$worker = new Desire_Worker('chunk.json://0.0.0.0:14917');
+
+$worker->onMessage = function($connection, $remote)
+{
+	print_r($remote);
+};
+
+
+$xx = [
+	"$interface" => [
+		"providers" => [
+
+		],
+		"configurators" => [],
+		"consumers" => [],
+		"routers" => [],
+	]
+];
+//application,interface,methods,side[provider],timestamp
+
+//name,version,group,token
+
+//$this->setRegistry($this->getConfig('registry.address', 'zookeeper://127.0.0.1:2181?backup=127.0.0.1:2181'));
+//multicast,zookeeper,redis,dubbo
+//			'registry' => $this->registry,
+//'serviceName' => $serviceName,
+//			'serviceVersion' => $serviceVersion,/
+//			'serviceGroup' => $serviceGroup,
+//			'serviceToken' => $serviceToken,
+//
+$worker->onClose = function($connection)
+{
+	print_r($connection->worker);
+};
+
+Desire_Worker::run();

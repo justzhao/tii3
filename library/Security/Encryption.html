@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Encryption</title>
+    <meta charset="UTF-8">
+    <script src="js/Encryption.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function sleep(n){
+            var start = new Date().getTime();//定义起始时间的毫秒数
+            while(true){
+                var time = new Date().getTime();//每次执行循环取得一次当前时间的毫秒数
+                if(time - start>n){//如果当前时间的毫秒数减去起始时间的毫秒数大于给定的毫秒数，即结束循环
+                    break;
+                }
+            }
+        }
+
+
+        var b = new TiiSecurityEncryption();
+        b.setAuthcodeKey("abc");
+        s = b.encodeWithoutHash('如果当前时间的毫秒数减去起始时间的毫秒数大于给定的毫秒数，即结束循环', 100, 'key');
+        console.log(s);
+        s = b.encode('如果当前时间的毫秒数减去起始时间的毫秒数大于给定的毫秒数，即结束循环', 100, 'key');
+        //sleep(5000);
+        console.log(s);
+        console.log(b.decode(s, 'key'));
+        console.log(b.decode('614drnttKbnt7j-ZFgQgvpjrtmG0fubefu4BaWtTyatm0w', 'keyd'));
+    </script>
+</head>
+<body>
+
+</body>
+</html>
