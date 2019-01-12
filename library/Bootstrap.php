@@ -27,7 +27,7 @@
  * WARNING: To prevent naming conflicts, please do not use `Tii' started, GOOD LUCK!!!
  *
  * @author Fitz Zhang <alacner@gmail.com>
- * @version $Id: Bootstrap.php 9139 2019-01-12 03:51:43Z alacner $
+ * @version $Id: Bootstrap.php 9141 2019-01-12 06:20:46Z alacner $
  */
 
 error_reporting(0);
@@ -798,7 +798,6 @@ final class Tii
                     list($m, $n) = explode('=', $arg, 2);
                     $ret->pairs[$m] = $n;
                 }
-
             } else {
                 $ret->env[] = $arg;
             }
