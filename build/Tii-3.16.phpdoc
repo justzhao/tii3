@@ -4,7 +4,7 @@
  * 
  * WARNING: To prevent naming conflicts, please do not use `Tii' started, GOOD LUCK!!!
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Bootstrap.php 8251 2016-10-27 02:40:35Z alacner $
  */
 
@@ -355,7 +355,7 @@ spl_autoload_register(function($className)
 /**
  * Exception basic class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Exception.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -411,7 +411,7 @@ class Tii_Exception extends Exception
 /**
  * Log processing abstract classes
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -469,7 +469,7 @@ abstract class Tii_Logger_Abstract
 /**
  * Cache Abstract
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -573,7 +573,7 @@ abstract class Tii_Cache_Abstract
 /**
  * Application abstract class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -618,7 +618,7 @@ abstract class Tii_Application_Abstract
 /**
  * Processor Abstract
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -747,7 +747,7 @@ abstract class Tii_Application_Processor_Abstract
 /**
  * Assistant controller paging abstract classes
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -782,7 +782,7 @@ abstract class Tii_Application_Helper_Pager_Abstract extends Tii_Application_Abs
 /**
  * Controller abstract class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -817,7 +817,7 @@ abstract class Tii_Application_Controller_Abstract extends Tii_Application_Abstr
 /**
  * Async Tcp Connection
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Async.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -922,7 +922,7 @@ class Tii_Worker_Connection_Async extends Tii_Worker_Connection_Tcp
 /**
  * Connection Abstract
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -1010,7 +1010,7 @@ abstract class Tii_Worker_Connection_Abstract extends Tii_Worker_Connection
  * $client = new Tii_Worker_Client('text.json://127.0.0.1:4521');
  * $client->request([...])
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Client.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -1074,7 +1074,7 @@ class Tii_Worker_Client
 /**
  * Using the local file to the cache data
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: File.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -1225,7 +1225,7 @@ class Tii_Cache_File extends Tii_Cache_Abstract
  * Package time class, prevent the server time appears to facilitate change of time cannot be modified
  * WARNING: direct use is strictly prohibited PHP comes with the time (), date () function
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Time.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -1402,7 +1402,7 @@ final class Tii_Time
  * 2) ClassName_Service::Foo($arg1, $arg2...)->bar(...);
  *   --> called: created ClassName_Service_Foo instance then call the bar method without Tii_Delegate
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Service.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -1419,7 +1419,7 @@ class Tii_Service
 /**
  * Security Filter Class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Filter.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -1460,7 +1460,7 @@ final class Tii_Security_Filter
 /**
  * Security encryption to decrypt, *** URL SAFE ***
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Encryption.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -1554,7 +1554,7 @@ final class Tii_Security_Encryption
 /**
  * Network class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Network.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -1649,7 +1649,7 @@ final class Tii_Network
 /**
  * Math class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Math.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -1865,7 +1865,7 @@ final class Tii_Math
 /**
  * Cache protocol session of abstract classes
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Cache.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -1880,8 +1880,8 @@ class Tii_Application_SessionHandler_Cache implements SessionHandlerInterface
  * Encapsulated with socket under the HTTP request
  * WARNING: It is forbidden to use the file_get_contents function access external links.
  *
- * @author Zhihua Zhang <alacner@gmail.com>
- * @version $Id: Http.php 677 2012-06-22 02:37:34Z yametei $
+ * @author Fitz Zhang <alacner@gmail.com>
+ * @version $Id: Http.php 677 2012-06-22 02:37:34Z alacner $
  */
 final class Tii_Http
 
@@ -2081,7 +2081,7 @@ final class Tii_Http
 /**
  * The expansion of the system files
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Filesystem.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -2323,7 +2323,7 @@ final class Tii_Filesystem
 /**
  * Session class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Session.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -2375,7 +2375,7 @@ final class Tii_Application_Session
  * $a->floatValue(); //like $a->float*(); return a float value
  * $a->getAuthor(); //like $a->get*(); return a value
  *
- * @author  Alacner Zhang <alacner@gmail.com>
+ * @author  Fitz Zhang <alacner@gmail.com>
  * @version $Id: DocCommentParser.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -2431,7 +2431,7 @@ final class Tii_DocCommentParser
  * "@cacheMode <string>" <method> default: file
  * "@useExpired <bool>" <method> under cacheMode == 'file', default: false
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Delegate.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -2449,7 +2449,7 @@ final class Tii_Delegate
 /**
  * HTTP response
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Response.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -2594,10 +2594,10 @@ class Tii_Application_Processor_Http_Response
  * will no longer throw a PDOException (or trigger an error) if a transaction is already
  * in-progress.
  *
- * @author     Cameron Brunner <cameron.brunner@gmail.com>
- * @author     Hans Lellelid <hans@xmpl.org>
- * @author     Christian Abegg <abegg.ch@gmail.com>
- * @author     Alacner Zhang <alacner@gmail.com>
+ * @author Cameron Brunner <cameron.brunner@gmail.com>
+ * @author Hans Lellelid <hans@xmpl.org>
+ * @author Christian Abegg <abegg.ch@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @since      2006-09-22
  * @package    propel.util
  */
@@ -2730,7 +2730,7 @@ final class Tii_Dao_Common_PropelPDO extends PDO {
  *
  * Reserve: tii.config.php and lang-*.config.php
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Config.php 8370 2016-10-31 13:36:46Z alacner $
  */
 
@@ -2835,7 +2835,7 @@ final class Tii_Config
 /**
  * memcache class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Memcache.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -2992,7 +2992,7 @@ class Tii_Cache_Memcache extends Tii_Cache_Abstract
 /**
  * Defense CSRF scheme
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Csrf.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -3041,7 +3041,7 @@ class Tii_Application_Helper_Csrf extends Tii_Application_Abstract
 /**
  * Using the PHP Array to Cache data in runtime
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Array.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -3170,7 +3170,7 @@ class Tii_Cache_Array extends Tii_Cache_Abstract
 /**
  * Using the Alternative PHP Cache to Cache data
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Apc.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -3289,7 +3289,7 @@ class Tii_Cache_Apc extends Tii_Cache_Abstract
 /**
  * Application bootstrap
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Application.php 8251 2016-10-27 02:40:35Z alacner $
  */
 
@@ -3380,7 +3380,7 @@ final class Tii_Application
 /**
  * Libevent event loop
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Libevent.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -3412,7 +3412,7 @@ class Tii_Worker_Event_Libevent extends Tii_Worker_Event_Abstract
 /**
  * Collect the results Processor
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Mock.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -3498,7 +3498,7 @@ class Tii_Application_Processor_Mock extends Tii_Application_Processor_Abstract
 /**
  * Processor http
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Http.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -3714,7 +3714,7 @@ class Tii_Application_Processor_Http extends Tii_Application_Processor_Abstract
 /**
  * Controller HTML form processing helper classes
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Html.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -3943,7 +3943,7 @@ class Tii_Application_Helper_Html extends Tii_Application_Abstract
 /**
  * Render class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Render.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4007,7 +4007,7 @@ class Tii_Application_Processor_Http_Render extends Tii_Application_Abstract
 /**
  *  Processor cli
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Cli.php 8249 2016-10-27 02:34:08Z alacner $
  */
 
@@ -4080,7 +4080,7 @@ class Tii_Application_Processor_Cli extends Tii_Application_Processor_Abstract
 /**
  * Cli response
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Response.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4136,7 +4136,7 @@ class Tii_Application_Processor_Cli_Response
  * $worker2 = new Tii_Worker('udp://0.0.0.0:2345');
  * Tii_Worker::run();
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Worker.php 8251 2016-10-27 02:40:35Z alacner $
  */
 
@@ -4417,7 +4417,7 @@ Tii_Event::register('tii.worker.protocols', function($protocols)
 /**
  * Controller error abstract class
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: ErrorAbstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4438,7 +4438,7 @@ abstract class Tii_Application_Controller_ErrorAbstract extends Tii_Application_
  * example:
  * Tii_Worker_Timer::add($time_interval, callback, [$arg1, $arg2..]);
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Timer.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4520,7 +4520,7 @@ class Tii_Worker_Timer
 /**
  * EVENT event loop
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Event.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4546,7 +4546,7 @@ class Tii_Worker_Event_Event extends Tii_Worker_Event_Abstract
 /**
  * Select event loop
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Select.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4621,7 +4621,7 @@ class Tii_Worker_Event_Select extends Tii_Worker_Event_Abstract
 /**
  * Dao Query Helper
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Dao.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4683,7 +4683,7 @@ class Tii_Application_Helper_Dao extends Tii_Application_Abstract
 /**
  * EV event loop
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Ev.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4763,7 +4763,7 @@ class Tii_Worker_Event_Ev extends Tii_Worker_Event_Abstract
 /**
  * Worker Event
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Event.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4792,7 +4792,7 @@ class Tii_Worker_Event
 /**
  * Event Abstract
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Abstract.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4866,7 +4866,7 @@ abstract class Tii_Worker_Event_Abstract extends Tii_Worker_Event
 /**
  * Connection Abstract
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Connection.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
@@ -4883,7 +4883,7 @@ class Tii_Worker_Connection extends Tii_Worker_Callable
 /**
  * Tcp Connection
  *
- * @author Alacner Zhang <alacner@gmail.com>
+ * @author Fitz Zhang <alacner@gmail.com>
  * @version $Id: Tcp.php 8246 2016-10-27 02:03:30Z alacner $
  */
 
