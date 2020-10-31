@@ -621,7 +621,6 @@ final class Tii_Http
                                     }
 
                                     $FILES[$match[1]] = $FILE;
-                                    continue;
                                 } else {//post field
                                     if (preg_match('/name="(.*?)"$/', $header_value, $match)) {
                                         $POST[$match[1]] = $boundary_value;
